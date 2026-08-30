@@ -1,0 +1,811 @@
+[
+  {
+    "id": "enter-van-gogh",
+    "prompt": "Get me into the Van Gogh room.",
+    "expect": {
+      "calls": [
+        "buy_ticket:van-gogh",
+        "enter_wing:van-gogh"
+      ],
+      "maxPayments": 1,
+      "state": {
+        "wing": "van-gogh"
+      },
+      "toolsPresent": [
+        "walk",
+        "go_to_lobby"
+      ],
+      "toolsAbsent": []
+    }
+  },
+  {
+    "id": "price-check-no-purchase",
+    "prompt": "What does a ticket to the Dutch Cabinet cost? Don't buy anything.",
+    "expect": {
+      "calls": [
+        "list_wings"
+      ],
+      "forbid": [
+        "buy_ticket",
+        "fund_wallet",
+        "enter_wing"
+      ],
+      "state": {
+        "wing": "lobby",
+        "tickets": []
+      },
+      "toolsAbsent": [
+        "walk",
+        "enter_wing"
+      ]
+    }
+  },
+  {
+    "id": "see-everything-cheaply",
+    "prompt": "I want to see every room today. Get me in as cheaply as possible.",
+    "expect": {
+      "calls": [
+        "buy_ticket:day-pass"
+      ],
+      "maxPayments": 1,
+      "state": {
+        "tickets": [
+          "*"
+        ]
+      },
+      "toolsAbsent": [
+        "buy_ticket"
+      ],
+      "toolsPresent": [
+        "enter_wing"
+      ]
+    }
+  },
+  {
+    "id": "show-great-wave",
+    "prompt": "Show me the Great Wave.",
+    "scripted": [
+      "buy_ticket:ukiyo-e",
+      "view_artwork:Great Wave"
+    ],
+    "expect": {
+      "calls": [
+        "buy_ticket",
+        "view_artwork"
+      ],
+      "maxPayments": 1,
+      "state": {
+        "wing": "ukiyo-e",
+        "artwork": "great-wave"
+      }
+    }
+  },
+  {
+    "id": "take-me-to-milkmaid",
+    "prompt": "Take me to Vermeer's Milkmaid.",
+    "scripted": [
+      "buy_ticket:dutch-cabinet",
+      "view_artwork:Milkmaid"
+    ],
+    "expect": {
+      "calls": [
+        "buy_ticket",
+        "view_artwork"
+      ],
+      "maxPayments": 1,
+      "state": {
+        "wing": "dutch-cabinet",
+        "artwork": "the-milkmaid"
+      }
+    }
+  },
+  {
+    "id": "next-painting",
+    "setup": [
+      "buy_ticket:impressionists",
+      "enter_wing:impressionists"
+    ],
+    "prompt": "Next painting, please.",
+    "expect": {
+      "calls": [
+        "walk:next"
+      ],
+      "forbid": [
+        "buy_ticket"
+      ],
+      "state": {
+        "wing": "impressionists",
+        "index": 1
+      }
+    }
+  },
+  {
+    "id": "balance-question",
+    "prompt": "How much money do I have left?",
+    "expect": {
+      "calls": [
+        "wallet_status"
+      ],
+      "forbid": [
+        "buy_ticket",
+        "fund_wallet"
+      ],
+      "state": {
+        "wing": "lobby"
+      }
+    }
+  },
+  {
+    "id": "top-up",
+    "prompt": "I'm out of money — can you top me up?",
+    "expect": {
+      "calls": [
+        "fund_wallet"
+      ],
+      "forbid": [
+        "buy_ticket"
+      ]
+    }
+  },
+  {
+    "id": "day-pass-then-enter",
+    "setup": [
+      "buy_ticket:day-pass"
+    ],
+    "prompt": "Take me into the print room.",
+    "expect": {
+      "calls": [
+        "enter_wing:ukiyo-e"
+      ],
+      "forbid": [
+        "buy_ticket"
+      ],
+      "state": {
+        "wing": "ukiyo-e"
+      }
+    }
+  },
+  {
+    "id": "what-am-i-looking-at",
+    "setup": [
+      "buy_ticket:van-gogh",
+      "enter_wing:van-gogh",
+      "walk:next"
+    ],
+    "prompt": "What am I looking at?",
+    "expect": {
+      "calls": [
+        "look_around"
+      ],
+      "forbid": [
+        "walk",
+        "view_artwork",
+        "buy_ticket",
+        "enter_wing"
+      ],
+      "state": {
+        "wing": "van-gogh",
+        "artwork": "self-portrait-1887"
+      }
+    }
+  },
+  {
+    "id": "policy-ask-approve",
+    "policy": {
+      "askEveryTime": true
+    },
+    "approval": "approve",
+    "prompt": "Buy me a ticket to the Impressionist Wing.",
+    "expect": {
+      "calls": [
+        "buy_ticket:impressionists"
+      ],
+      "maxPayments": 1,
+      "state": {
+        "tickets": [
+          "impressionists"
+        ]
+      }
+    }
+  },
+  {
+    "id": "policy-ask-decline",
+    "policy": {
+      "askEveryTime": true
+    },
+    "approval": "decline",
+    "prompt": "Buy me a ticket to the Impressionist Wing.",
+    "expect": {
+      "calls": [
+        "buy_ticket:impressionists"
+      ],
+      "state": {
+        "tickets": []
+      },
+      "lastResultIsError": true
+    }
+  },
+  {
+    "id": "leave-room",
+    "setup": [
+      "buy_ticket:van-gogh",
+      "enter_wing:van-gogh"
+    ],
+    "prompt": "Let's leave this room.",
+    "expect": {
+      "calls": [
+        "go_to_lobby"
+      ],
+      "forbid": [
+        "buy_ticket"
+      ],
+      "state": {
+        "wing": "lobby"
+      }
+    }
+  },
+  {
+    "id": "whos-here",
+    "prompt": "Has anyone else been admitted today?",
+    "expect": {
+      "calls": [
+        "whos_here"
+      ],
+      "forbid": [
+        "buy_ticket",
+        "enter_wing"
+      ]
+    }
+  },
+  {
+    "id": "plan-tour-prices-doors",
+    "prompt": "Plan me a short tour about light and weather — two or three stops — and tell me what it will cost before starting.",
+    "scripted": [
+      {
+        "call": "plan_tour",
+        "params": {
+          "theme": "Light and weather",
+          "stops": [
+            {
+              "artwork": "Sunrise (Marine)",
+              "note": "Le Havre at dawn, the season of the painting that named Impressionism."
+            },
+            {
+              "artwork": "Wheatstacks, Snow Effect, Morning",
+              "note": "Pink and blue snow — colour where most painters saw white.",
+              "spotlight": {
+                "x": 0.05,
+                "y": 0.35,
+                "w": 0.45,
+                "h": 0.4
+              }
+            },
+            {
+              "artwork": "Shower Below the Summit",
+              "note": "A storm on the lower slopes; the peak stays in sun.",
+              "spotlight": {
+                "x": 0.55,
+                "y": 0.6,
+                "w": 0.4,
+                "h": 0.35
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "expect": {
+      "calls": [
+        "plan_tour"
+      ],
+      "forbid": [
+        "buy_ticket",
+        "start_tour"
+      ],
+      "state": {
+        "tour": {
+          "status": "proposed",
+          "stops": 3
+        },
+        "tickets": []
+      },
+      "toolsPresent": [
+        "start_tour",
+        "tour_step"
+      ]
+    }
+  },
+  {
+    "id": "start-tour-buys-cheapest",
+    "setup": [
+      {
+        "call": "plan_tour",
+        "params": {
+          "theme": "Light and weather",
+          "stops": [
+            {
+              "artwork": "Sunrise (Marine)",
+              "note": "Le Havre at dawn, the season of the painting that named Impressionism."
+            },
+            {
+              "artwork": "Wheatstacks, Snow Effect, Morning",
+              "note": "Pink and blue snow — colour where most painters saw white.",
+              "spotlight": {
+                "x": 0.05,
+                "y": 0.35,
+                "w": 0.45,
+                "h": 0.4
+              }
+            },
+            {
+              "artwork": "Shower Below the Summit",
+              "note": "A storm on the lower slopes; the peak stays in sun.",
+              "spotlight": {
+                "x": 0.55,
+                "y": 0.6,
+                "w": 0.4,
+                "h": 0.35
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "prompt": "Looks good — start the tour.",
+    "expect": {
+      "calls": [
+        "start_tour"
+      ],
+      "maxPayments": 0,
+      "state": {
+        "tour": {
+          "status": "active",
+          "cursor": 0
+        },
+        "screen": "wing",
+        "wing": "impressionists",
+        "artwork": "sunrise-marine",
+        "docent": true
+      },
+      "toolsAbsent": [
+        "start_tour"
+      ]
+    }
+  },
+  {
+    "id": "tour-step-applies-spotlight",
+    "setup": [
+      {
+        "call": "plan_tour",
+        "params": {
+          "theme": "Light and weather",
+          "stops": [
+            {
+              "artwork": "Sunrise (Marine)",
+              "note": "Le Havre at dawn, the season of the painting that named Impressionism."
+            },
+            {
+              "artwork": "Wheatstacks, Snow Effect, Morning",
+              "note": "Pink and blue snow — colour where most painters saw white.",
+              "spotlight": {
+                "x": 0.05,
+                "y": 0.35,
+                "w": 0.45,
+                "h": 0.4
+              }
+            },
+            {
+              "artwork": "Shower Below the Summit",
+              "note": "A storm on the lower slopes; the peak stays in sun.",
+              "spotlight": {
+                "x": 0.55,
+                "y": 0.6,
+                "w": 0.4,
+                "h": 0.35
+              }
+            }
+          ]
+        }
+      },
+      "start_tour"
+    ],
+    "prompt": "Next stop.",
+    "expect": {
+      "calls": [
+        "tour_step:next"
+      ],
+      "state": {
+        "tour": {
+          "cursor": 1
+        },
+        "artwork": "wheatstacks-snow",
+        "spotlight": true,
+        "docent": true
+      }
+    }
+  },
+  {
+    "id": "tour-crosses-rooms-and-finishes",
+    "setup": [
+      {
+        "call": "plan_tour",
+        "params": {
+          "theme": "Light and weather",
+          "stops": [
+            {
+              "artwork": "Sunrise (Marine)",
+              "note": "Le Havre at dawn, the season of the painting that named Impressionism."
+            },
+            {
+              "artwork": "Wheatstacks, Snow Effect, Morning",
+              "note": "Pink and blue snow — colour where most painters saw white.",
+              "spotlight": {
+                "x": 0.05,
+                "y": 0.35,
+                "w": 0.45,
+                "h": 0.4
+              }
+            },
+            {
+              "artwork": "Shower Below the Summit",
+              "note": "A storm on the lower slopes; the peak stays in sun.",
+              "spotlight": {
+                "x": 0.55,
+                "y": 0.6,
+                "w": 0.4,
+                "h": 0.35
+              }
+            }
+          ]
+        }
+      },
+      "start_tour",
+      "tour_step:next"
+    ],
+    "prompt": "Keep going to the end of the tour.",
+    "scripted": [
+      "tour_step:next",
+      "tour_step:next"
+    ],
+    "expect": {
+      "calls": [
+        "tour_step:next"
+      ],
+      "state": {
+        "wing": "ukiyo-e",
+        "artwork": "shower-below-summit",
+        "tour": {
+          "status": "done"
+        }
+      },
+      "toolsAbsent": [
+        "tour_step"
+      ]
+    }
+  },
+  {
+    "id": "visitor-drops-a-stop",
+    "setup": [
+      {
+        "call": "plan_tour",
+        "params": {
+          "theme": "Light and weather",
+          "stops": [
+            {
+              "artwork": "Sunrise (Marine)",
+              "note": "Le Havre at dawn, the season of the painting that named Impressionism."
+            },
+            {
+              "artwork": "Wheatstacks, Snow Effect, Morning",
+              "note": "Pink and blue snow — colour where most painters saw white.",
+              "spotlight": {
+                "x": 0.05,
+                "y": 0.35,
+                "w": 0.45,
+                "h": 0.4
+              }
+            },
+            {
+              "artwork": "Shower Below the Summit",
+              "note": "A storm on the lower slopes; the peak stays in sun.",
+              "spotlight": {
+                "x": 0.55,
+                "y": 0.6,
+                "w": 0.4,
+                "h": 0.35
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "prompt": "(the visitor removes the second stop in the panel, then asks) How many stops are left on my tour?",
+    "human": [
+      {
+        "click": ".tour-stop:nth-child(2) .tour-ctl button:nth-child(3)"
+      }
+    ],
+    "expect": {
+      "calls": [
+        "look_around"
+      ],
+      "forbid": [
+        "plan_tour",
+        "end_tour"
+      ],
+      "state": {
+        "tour": {
+          "stops": 2
+        }
+      }
+    }
+  },
+  {
+    "id": "spotlight-detail",
+    "setup": [
+      "buy_ticket:dutch-cabinet",
+      "view_artwork:Milkmaid"
+    ],
+    "prompt": "Show me the bread on the table and tell me about it.",
+    "scripted": [
+      {
+        "call": "spotlight",
+        "params": {
+          "x": 0.2,
+          "y": 0.62,
+          "w": 0.35,
+          "h": 0.25,
+          "note": "The bread is built up in thick impasto — Vermeer sculpting with paint."
+        }
+      }
+    ],
+    "expect": {
+      "calls": [
+        "spotlight"
+      ],
+      "forbid": [
+        "buy_ticket"
+      ],
+      "state": {
+        "artwork": "the-milkmaid",
+        "spotlight": true,
+        "docent": true
+      }
+    }
+  },
+  {
+    "id": "visitor-points-agent-reads",
+    "setup": [
+      "buy_ticket:ukiyo-e",
+      "view_artwork:Great Wave"
+    ],
+    "prompt": "(the visitor clicks a spot on the print, then asks) What's that?",
+    "human": [
+      {
+        "click": ".zoom",
+        "position": {
+          "x": 0.62,
+          "y": 0.68
+        }
+      }
+    ],
+    "expect": {
+      "calls": [
+        "look_around"
+      ],
+      "forbid": [
+        "buy_ticket",
+        "walk"
+      ],
+      "state": {
+        "pin": true
+      },
+      "lastResultIncludes": "visitorPointing"
+    }
+  },
+  {
+    "id": "compare-two-works",
+    "setup": [
+      "buy_ticket:day-pass"
+    ],
+    "prompt": "Put the Great Wave next to Red Fuji.",
+    "scripted": [
+      {
+        "call": "compare",
+        "params": {
+          "a": "Great Wave",
+          "b": "South Wind, Clear Sky"
+        }
+      }
+    ],
+    "expect": {
+      "calls": [
+        "compare"
+      ],
+      "forbid": [
+        "buy_ticket"
+      ],
+      "state": {
+        "screen": "compare",
+        "compare": "great-wave|south-wind-clear-sky"
+      }
+    }
+  },
+  {
+    "id": "compare-needs-tickets",
+    "prompt": "Compare the Milkmaid with the Bedroom.",
+    "scripted": [
+      {
+        "call": "compare",
+        "params": {
+          "a": "Milkmaid",
+          "b": "The Bedroom"
+        }
+      }
+    ],
+    "expect": {
+      "calls": [
+        "compare"
+      ],
+      "state": {
+        "screen": "lobby"
+      },
+      "lastResultIsError": true
+    }
+  },
+  {
+    "id": "take-curated-tour",
+    "prompt": "Show me one of the museum's own tours about water.",
+    "scripted": [
+      {
+        "call": "take_tour",
+        "params": {
+          "tour": "water"
+        }
+      }
+    ],
+    "expect": {
+      "calls": [
+        "take_tour"
+      ],
+      "forbid": [
+        "buy_ticket",
+        "plan_tour"
+      ],
+      "state": {
+        "tour": {
+          "status": "proposed",
+          "stops": 4
+        },
+        "tickets": []
+      },
+      "toolsPresent": [
+        "start_tour"
+      ],
+      "toolsAbsent": [
+        "take_tour"
+      ]
+    }
+  },
+  {
+    "id": "curated-tour-buys-cheapest-doors",
+    "setup": [
+      {
+        "call": "take_tour",
+        "params": {
+          "tour": "water"
+        }
+      }
+    ],
+    "prompt": "Start it.",
+    "expect": {
+      "calls": [
+        "start_tour"
+      ],
+      "state": {
+        "tour": {
+          "status": "active",
+          "cursor": 0
+        },
+        "artwork": "water-lilies",
+        "tickets": [
+          "impressionists",
+          "ukiyo-e"
+        ],
+        "docent": true
+      }
+    }
+  },
+  {
+    "id": "light-tour-prefers-day-pass",
+    "setup": [
+      {
+        "call": "take_tour",
+        "params": {
+          "tour": "light"
+        }
+      }
+    ],
+    "prompt": "Start the light tour.",
+    "expect": {
+      "calls": [
+        "start_tour"
+      ],
+      "state": {
+        "tour": {
+          "status": "active"
+        },
+        "tickets": [
+          "*"
+        ]
+      }
+    }
+  },
+  {
+    "id": "agent-undoes-a-wrong-turn",
+    "setup": [
+      {
+        "call": "take_tour",
+        "params": {
+          "tour": "water"
+        }
+      },
+      "start_tour",
+      "tour_step:next"
+    ],
+    "prompt": "That's not where I wanted to be — go back.",
+    "expect": {
+      "calls": [
+        "undo"
+      ],
+      "forbid": [
+        "buy_ticket"
+      ],
+      "state": {
+        "artwork": "water-lilies",
+        "tour": {
+          "cursor": 0
+        }
+      }
+    }
+  },
+  {
+    "id": "undo-cannot-refund",
+    "setup": [
+      {
+        "call": "take_tour",
+        "params": {
+          "tour": "water"
+        }
+      },
+      "start_tour"
+    ],
+    "prompt": "Actually, undo that.",
+    "expect": {
+      "calls": [
+        "undo"
+      ],
+      "state": {
+        "screen": "lobby",
+        "tickets": [
+          "impressionists",
+          "ukiyo-e"
+        ]
+      },
+      "lastResultIncludes": "stays spent"
+    }
+  },
+  {
+    "id": "nothing-to-undo-in-a-fresh-visit",
+    "prompt": "Undo the last thing.",
+    "expect": {
+      "forbid": [
+        "undo"
+      ],
+      "toolsAbsent": [
+        "undo"
+      ]
+    },
+    "scripted": []
+  }
+]
