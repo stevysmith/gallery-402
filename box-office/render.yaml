@@ -4,7 +4,9 @@ services:
     runtime: node
     rootDir: box-office
     plan: free
-    buildCommand: npm install && npm run build
+    # NODE_ENV=production makes npm skip devDependencies, which is where
+    # typescript and @types/node live — so the build needs them back explicitly.
+    buildCommand: npm install --include=dev && npm run build
     startCommand: npm start
     healthCheckPath: /health
     envVars:
