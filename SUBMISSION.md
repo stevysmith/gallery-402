@@ -44,7 +44,7 @@ A visitor can say "give me a ten-minute tour about light" and watch the agent co
 ## Prior work vs. new work
 
 - **New (Aug 28 → Sep 3):** everything in this repository — gallery, box office, collection, wallet/x402 flow, tools, design.
-- **Pre-existing:** [agentk](https://github.com/stevysmith/agentk) (command palette + WebMCP registration hook, first published July 2026) and [Stacktree](https://stacktr.ee) (static hosting). Changes to agentk made during the challenge are the commits dated Aug 28 onward (WebMCP annotations/title/isError, in-flight surface deferral, multi-step agent runs, and their tests).
+- **Pre-existing:** [agentk](https://github.com/stevysmith/agentk) (command palette + WebMCP registration hook, first published July 2026) and [Stacktree](https://stacktr.ee) (static hosting). Changes to agentk made during the challenge are the two commits on the [`webmcp-0.6.2`](https://github.com/stevysmith/agentk/commits/webmcp-0.6.2) branch, dated Aug 30 (WebMCP annotations/title/isError, in-flight surface deferral, multi-step agent runs, and their tests).
 
 ## Testing notes for judges
 
