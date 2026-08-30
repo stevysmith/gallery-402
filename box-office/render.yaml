@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: gallery-402-box-office
+    runtime: node
+    rootDir: box-office
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: X402_NETWORK
+        value: eip155:84532
+      - key: X402_FACILITATOR_URL
+        value: https://x402.org/facilitator
+      - key: PAY_TO
+        sync: false
+      - key: PAY_TO_MAINNET
+        sync: false
+      - key: CDP_API_KEY_ID
+        sync: false
+      - key: CDP_API_KEY_SECRET
+        sync: false
+      - key: TICKET_SECRET
+        generateValue: true
+      - key: TREASURY_PRIVATE_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false

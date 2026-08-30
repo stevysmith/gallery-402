@@ -1,0 +1,31 @@
+{
+  "name": "gallery-402-box-office",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "x402 box office for Gallery 402 — sells wing tickets over HTTP 402 and serves the gated collection",
+  "scripts": {
+    "dev": "tsx watch --env-file-if-exists=.env src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node --env-file-if-exists=.env dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.122.0",
+    "@coinbase/x402": "^2.1.0",
+    "@hono/node-server": "^1.14.0",
+    "@x402/core": "^2.24.0",
+    "@x402/evm": "^2.24.0",
+    "@x402/hono": "^2.24.0",
+    "hono": "^4.7.0",
+    "viem": "^2.48.11"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
