@@ -1,0 +1,35 @@
+{
+  "name": "gallery-402",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Gallery 402 \u2014 a virtual museum whose paywall is handled by your agent over WebMCP + x402",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -p tsconfig.json --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "eval": "node evals/run.mjs",
+    "eval:llm": "node evals/run-llm.mjs",
+    "compat": "node evals/compat.mjs"
+  },
+  "dependencies": {
+    "@stevysmith/agentk": "file:vendor/stevysmith-agentk-0.6.2.tgz",
+    "@x402/core": "^2.24.0",
+    "@x402/evm": "^2.24.0",
+    "@x402/fetch": "^2.24.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "viem": "^2.48.11"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.4.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "typescript": "^5.6.0",
+    "vite": "^6.0.0",
+    "vite-plugin-singlefile": "^2.0.0"
+  }
+}
