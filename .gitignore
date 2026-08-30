@@ -1,0 +1,11 @@
+node_modules/
+dist/
+box-office/.env
+.env.local
+.env.*.local
+*.key
+.DS_Store
+*.log
+test-results/
+playwright-report/
+**/evals/results/
