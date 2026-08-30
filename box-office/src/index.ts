@@ -179,23 +179,8 @@ const requirementsFor = (price: string) =>
     extra: { name: USDC_NAME[a.network] ?? 'USDC', version: '2' },
   }))
 
-/**
- * The URL a client on the outside actually reached us on. Behind a
- * TLS-terminating proxy (Render, Fly, Cloudflare) the request we see is plain
- * http, and an x402 payment is bound to the resource URL we advertise — so
- * signing against "http://…" when the caller used https breaks verification.
- */
-function publicUrl(c: any): URL {
-  const u = new URL(c.req.url)
-  const proto = c.req.header('x-forwarded-proto')?.split(',')[0]?.trim()
-  const host = c.req.header('x-forwarded-host')?.split(',')[0]?.trim()
-  if (proto) u.protocol = `${proto}:`
-  if (host) u.host = host
-  return u
-}
-
 const discovery = (c: any) => {
-  const base = publicUrl(c).origin
+  const base = new URL(c.req.url).origin
   const now = Math.floor(Date.now() / 1000)
   const items = [
     ...WINGS.map((w) => ({
@@ -412,7 +397,7 @@ function mockPaymentMiddleware(routeMap: RoutesConfig): MiddlewareHandler {
       const required = {
         x402Version: 2,
         error: 'Payment required',
-        resource: { url: publicUrl(c).toString(), description: route.description, mimeType: route.mimeType },
+        resource: { url: c.req.url, description: route.description, mimeType: route.mimeType },
         accepts: [{ scheme: 'exact', network: accept.network, asset: USDC[accept.network] ?? USDC[NETWORK], amount, payTo: accept.payTo, maxTimeoutSeconds: 300, extra: { name: 'USDC', version: '2' } }],
       }
       c.header('PAYMENT-REQUIRED', encodePaymentRequiredHeader(required as any))
@@ -485,7 +470,36 @@ function payerFromRequest(header: string | undefined): string {
   }
 }
 
-serve({ fetch: app.fetch, port: PORT }, (info) => {
+/**
+ * Behind a TLS-terminating proxy (Render, Fly, Cloudflare) the request that
+ * reaches us is plain http on an internal host, so every URL we derive from it
+ * is wrong on the outside. That is not cosmetic: an x402 payment is bound to
+ * the resource URL in the 402 challenge, and @x402/hono builds that URL from
+ * the request — so a client signing against the advertised "http://…" and a
+ * facilitator verifying the https:// one disagree.
+ *
+ * Rewriting the request here, at the edge, fixes the challenge, the discovery
+ * document and anything else downstream in one place.
+ */
+const fetchBehindProxy: typeof app.fetch = (request, ...rest) => {
+  const h = request.headers
+  const proto = h.get('x-forwarded-proto')?.split(',')[0]?.trim()
+  const host = h.get('x-forwarded-host')?.split(',')[0]?.trim() ?? h.get('host')?.trim()
+  if (proto || host) {
+    const u = new URL(request.url)
+    if (proto) u.protocol = `${proto}:`
+    if (host) {
+      u.host = host
+      // Setting .host without a port keeps the old one, which would leak the
+      // internal port (…onrender.com:10000) into every URL we advertise.
+      if (!host.includes(':')) u.port = ''
+    }
+    if (u.toString() !== request.url) request = new Request(u, request)
+  }
+  return app.fetch(request, ...rest)
+}
+
+serve({ fetch: fetchBehindProxy, port: PORT }, (info) => {
   console.log(`[box-office] ${MUSEUM.name} open at http://localhost:${info.port}`)
   for (const n of NETWORKS) console.log(`[box-office]   accepts ${n.label} (${n.network}) → ${n.payTo} via ${n.facilitator}`)
   console.log(`[box-office] faucet ${faucet ? 'enabled' : 'disabled (set TREASURY_PRIVATE_KEY)'} · agent proxy + docent ${env.ANTHROPIC_API_KEY ? 'enabled' : 'disabled (set ANTHROPIC_API_KEY)'}${MOCK ? ' · X402_MODE=mock (no chain, no facilitator)' : ''}`)
