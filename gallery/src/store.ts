@@ -264,6 +264,28 @@ export async function refreshBalance() {
   return usdc
 }
 
+/**
+ * Wait for a settlement to show up in the visitor's balance.
+ *
+ * Ticket payments are gasless: the visitor signs an EIP-3009 authorization and
+ * the facilitator submits the transfer. The box office hands back the ticket as
+ * soon as settlement confirms, which is typically before our RPC node reports
+ * the new balance — so a single refresh reads the old number and the wallet
+ * appears not to have moved. Watching the most visible evidence that a real
+ * payment happened sit unchanged is exactly the wrong impression to leave.
+ */
+async function refreshBalanceAfterSettlement(spent: number) {
+  const before = state.balance ?? 0
+  for (const wait of [0, 1500, 3000, 5000, 8000]) {
+    if (wait) await new Promise((r) => setTimeout(r, wait))
+    const now = await refreshBalance().catch(() => undefined)
+    if (now === undefined) return
+    // Settled once the balance has dropped by most of what we spent; a partial
+    // check tolerates rounding without waiting for an exact figure.
+    if (before - now >= spent * 0.9) return
+  }
+}
+
 export function setPolicy(patch: Partial<SpendPolicy>) {
   const policy = { ...state.policy, ...patch }
   savePolicy(policy)
@@ -343,7 +365,7 @@ export async function buyTicket(id: string, via: 'agent' | 'human' = 'human'): P
     set((s) => ({ tickets: { ...s.tickets, [t.wing]: stub }, receipts: receipt ? [receipt, ...s.receipts] : s.receipts }))
     persist()
     log('ok', `Ticket issued: ${t.wingName} · admit one · valid until ${new Date(t.expiresAt).toLocaleTimeString()}`, undefined, { irreversible: true })
-    refreshBalance().catch(() => {})
+    refreshBalanceAfterSettlement(Number(t.price?.replace(/[^0-9.]/g, '')) || 0).catch(() => {})
     loadSettlements()
     return stub
   } catch (e: any) {
