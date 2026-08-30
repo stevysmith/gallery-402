@@ -179,8 +179,23 @@ const requirementsFor = (price: string) =>
     extra: { name: USDC_NAME[a.network] ?? 'USDC', version: '2' },
   }))
 
+/**
+ * The URL a client on the outside actually reached us on. Behind a
+ * TLS-terminating proxy (Render, Fly, Cloudflare) the request we see is plain
+ * http, and an x402 payment is bound to the resource URL we advertise — so
+ * signing against "http://…" when the caller used https breaks verification.
+ */
+function publicUrl(c: any): URL {
+  const u = new URL(c.req.url)
+  const proto = c.req.header('x-forwarded-proto')?.split(',')[0]?.trim()
+  const host = c.req.header('x-forwarded-host')?.split(',')[0]?.trim()
+  if (proto) u.protocol = `${proto}:`
+  if (host) u.host = host
+  return u
+}
+
 const discovery = (c: any) => {
-  const base = new URL(c.req.url).origin
+  const base = publicUrl(c).origin
   const now = Math.floor(Date.now() / 1000)
   const items = [
     ...WINGS.map((w) => ({
@@ -397,7 +412,7 @@ function mockPaymentMiddleware(routeMap: RoutesConfig): MiddlewareHandler {
       const required = {
         x402Version: 2,
         error: 'Payment required',
-        resource: { url: c.req.url, description: route.description, mimeType: route.mimeType },
+        resource: { url: publicUrl(c).toString(), description: route.description, mimeType: route.mimeType },
         accepts: [{ scheme: 'exact', network: accept.network, asset: USDC[accept.network] ?? USDC[NETWORK], amount, payTo: accept.payTo, maxTimeoutSeconds: 300, extra: { name: 'USDC', version: '2' } }],
       }
       c.header('PAYMENT-REQUIRED', encodePaymentRequiredHeader(required as any))
