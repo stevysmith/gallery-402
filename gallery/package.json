@@ -14,7 +14,7 @@
     "compat": "node evals/compat.mjs"
   },
   "dependencies": {
-    "@stevysmith/agentk": "file:vendor/stevysmith-agentk-0.6.2.tgz",
+    "@stevysmith/agentk": "^0.6.2",
     "@x402/core": "^2.24.0",
     "@x402/evm": "^2.24.0",
     "@x402/fetch": "^2.24.0",
