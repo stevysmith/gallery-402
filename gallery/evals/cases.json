@@ -137,7 +137,7 @@
   },
   {
     "id": "top-up",
-    "prompt": "I'm out of money — can you top me up?",
+    "prompt": "I'm out of money \u2014 can you top me up?",
     "expect": {
       "calls": [
         "fund_wallet"
@@ -259,7 +259,7 @@
   },
   {
     "id": "plan-tour-prices-doors",
-    "prompt": "Plan me a short tour about light and weather — two or three stops — and tell me what it will cost before starting.",
+    "prompt": "Plan me a short tour about light and weather \u2014 two or three stops \u2014 and tell me what it will cost before starting.",
     "scripted": [
       {
         "call": "plan_tour",
@@ -272,7 +272,7 @@
             },
             {
               "artwork": "Wheatstacks, Snow Effect, Morning",
-              "note": "Pink and blue snow — colour where most painters saw white.",
+              "note": "Pink and blue snow \u2014 colour where most painters saw white.",
               "spotlight": {
                 "x": 0.05,
                 "y": 0.35,
@@ -329,7 +329,7 @@
             },
             {
               "artwork": "Wheatstacks, Snow Effect, Morning",
-              "note": "Pink and blue snow — colour where most painters saw white.",
+              "note": "Pink and blue snow \u2014 colour where most painters saw white.",
               "spotlight": {
                 "x": 0.05,
                 "y": 0.35,
@@ -351,7 +351,7 @@
         }
       }
     ],
-    "prompt": "Looks good — start the tour.",
+    "prompt": "Looks good \u2014 start the tour.",
     "expect": {
       "calls": [
         "start_tour"
@@ -386,7 +386,7 @@
             },
             {
               "artwork": "Wheatstacks, Snow Effect, Morning",
-              "note": "Pink and blue snow — colour where most painters saw white.",
+              "note": "Pink and blue snow \u2014 colour where most painters saw white.",
               "spotlight": {
                 "x": 0.05,
                 "y": 0.35,
@@ -438,7 +438,7 @@
             },
             {
               "artwork": "Wheatstacks, Snow Effect, Morning",
-              "note": "Pink and blue snow — colour where most painters saw white.",
+              "note": "Pink and blue snow \u2014 colour where most painters saw white.",
               "spotlight": {
                 "x": 0.05,
                 "y": 0.35,
@@ -497,7 +497,7 @@
             },
             {
               "artwork": "Wheatstacks, Snow Effect, Morning",
-              "note": "Pink and blue snow — colour where most painters saw white.",
+              "note": "Pink and blue snow \u2014 colour where most painters saw white.",
               "spotlight": {
                 "x": 0.05,
                 "y": 0.35,
@@ -555,7 +555,7 @@
           "y": 0.62,
           "w": 0.35,
           "h": 0.25,
-          "note": "The bread is built up in thick impasto — Vermeer sculpting with paint."
+          "note": "The bread is built up in thick impasto \u2014 Vermeer sculpting with paint."
         }
       }
     ],
@@ -753,7 +753,7 @@
       "start_tour",
       "tour_step:next"
     ],
-    "prompt": "That's not where I wanted to be — go back.",
+    "prompt": "That's not where I wanted to be \u2014 go back.",
     "expect": {
       "calls": [
         "undo"
@@ -807,5 +807,56 @@
       ]
     },
     "scripted": []
+  },
+  {
+    "id": "error-is-an-instruction",
+    "prompt": "(error contract) a locked door quotes the fix and its price",
+    "setup": [
+      "buy_ticket:ukiyo-e"
+    ],
+    "scripted": [
+      "enter_wing:van-gogh"
+    ],
+    "expect": {
+      "calls": [
+        "enter_wing:van-gogh"
+      ],
+      "lastResultIsError": true,
+      "lastResultIncludes": [
+        "buy_ticket",
+        "$0.02"
+      ],
+      "state": {
+        "screen": "lobby"
+      }
+    }
+  },
+  {
+    "id": "error-names-the-valid-wings",
+    "prompt": "(error contract) a bad wing id lists the real ones",
+    "scripted": [
+      "buy_ticket:no-such-wing"
+    ],
+    "expect": {
+      "calls": [
+        "buy_ticket:no-such-wing"
+      ],
+      "lastResultIsError": true,
+      "lastResultIncludes": "van-gogh"
+    }
+  },
+  {
+    "id": "error-points-at-the-catalog",
+    "prompt": "(error contract) an unknown title points at list_artworks",
+    "scripted": [
+      "view_artwork:Mona Lisa"
+    ],
+    "expect": {
+      "calls": [
+        "view_artwork"
+      ],
+      "lastResultIsError": true,
+      "lastResultIncludes": "list_artworks"
+    }
   }
 ]

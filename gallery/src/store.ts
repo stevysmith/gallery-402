@@ -420,7 +420,7 @@ export async function viewArtwork(query: string, via: 'agent' | 'human' = 'human
   let hit = findArtwork(query)
   if (!hit) {
     const loc = locateTeaser(query)
-    if (!loc) throw new Error(`No artwork matching "${query}". Use list_wings to see titles.`)
+    if (!loc) throw new Error(`No artwork matching "${query}". Use list_artworks to see titles.`)
     const w = wingOf(loc.wing)!
     if (!hasTicket(loc.wing)) throw new Error(`"${loc.title}" hangs in the ${w.name}, which needs a ticket (${w.price}). Call buy_ticket with wing "${loc.wing}" first.`)
     await loadWing(loc.wing)

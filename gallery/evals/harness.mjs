@@ -242,7 +242,8 @@ export function judge(c, calls, state, lastResult) {
   for (const t of exp.toolsPresent ?? []) if (!state.tools.includes(PREFIX + t)) failures.push(`tool ${t} should be registered now`)
   for (const t of exp.toolsAbsent ?? []) if (state.tools.includes(PREFIX + t)) failures.push(`tool ${t} should NOT be registered now`)
   if (exp.lastResultIsError && !(lastResult && lastResult.isError)) failures.push('expected the last tool result to carry isError')
-  if (exp.lastResultIncludes && !(lastResult && lastResult.text.includes(exp.lastResultIncludes))) failures.push(`expected the last tool result to mention "${exp.lastResultIncludes}"`)
+  for (const want of [exp.lastResultIncludes ?? []].flat())
+    if (!(lastResult && lastResult.text.includes(want))) failures.push(`expected the last tool result to mention "${want}"`)
   return failures
 }
 
