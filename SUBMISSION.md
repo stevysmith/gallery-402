@@ -70,6 +70,16 @@ A visitor can say "give me a ten-minute tour about light" and watch the agent co
 - **Hosting:** the museum is one self-contained HTML file published on Stacktree (which serves Chrome's WebMCP origin-trial token); the box office runs on Render.
 - **agentk (pre-existing, extended during the challenge):** [`@stevysmith/agentk@0.6.2`](https://www.npmjs.com/package/@stevysmith/agentk), published to npm during the challenge and installed by this repo from the registry — not vendored. It adds WebMCP `annotations`/`title`/`isError` to `useWebMCPRegistration`, defers surface changes while calls are in flight, and runs multi-step agent turns; 180 tests. All museum code is new for the challenge.
 
+## The real-world version
+
+We know the difference between a winning demo and a product. The transaction is proven; the product work that remains sits around it:
+
+- **Discovery.** Today the museum is a URL someone hands you. The real-world version is listed in the x402 Bazaar — via the CDP facilitator's bazaar extension — so an agent that has never met a human can find "virtual museum, $0.01 admission" the way it finds any paid API. We solved payment; discovery is where demand comes from, and it's the next integration.
+- **The merchant's side.** Everything here celebrates the visitor. The box office already holds the seller's story — revenue by door, which rooms earn, what agents asked for that isn't sold (tool calls are the new analytics) — and the real product surfaces it as a back office. That is the view a publisher or API owner judges this pattern by.
+- **Entitlements that outlive the browser.** Tickets are already bound to the payer's address, so "restore my visit on my phone" is just proving control of that address — an account system with no signup. The same bearer property makes `present_ticket` a gifting mechanism today: the payer and the visitor don't have to be the same person.
+- **Metering the museum's own AI.** Every docent answer costs the museum inference, capped at 60/day. The real-world version prices the docent itself over x402's `upto` scheme — pay what the answer costs — turning an eaten LLM bill into a per-use product. And because the 402 is generated per request, pricing is a decision point, not a constant: return-visitor discounts (the payer is in the signature), free-entry Sundays, and the day pass — our one shipped bundling feature — are each an `if` statement, not a billing integration.
+- **Where does a normal person's USDC come from?** Honestly: not from the page. The site can stake cents (our faucet, testnet-only); the durable answer is the agent layer — fund your assistant's wallet once from a card, and every site's 402 is paid by the same identity. That is the world this museum is built for, and why the box office accepts a ticket paid by anyone, presented by anyone.
+
 ## Prior work vs. new work
 
 - **New (Aug 28 → Sep 3):** everything in this repository — gallery, box office, collection, wallet/x402 flow, tools, design.
