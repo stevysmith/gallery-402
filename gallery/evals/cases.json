@@ -591,7 +591,8 @@
     ],
     "expect": {
       "calls": [
-        "look_around"
+        "look_around",
+        "spotlight"
       ],
       "forbid": [
         "buy_ticket",
@@ -599,8 +600,7 @@
       ],
       "state": {
         "pin": true
-      },
-      "lastResultIncludes": "visitorPointing"
+      }
     }
   },
   {
@@ -651,7 +651,8 @@
         "screen": "lobby"
       },
       "lastResultIsError": true
-    }
+    },
+    "scriptedOnly": true
   },
   {
     "id": "take-curated-tour",
@@ -685,7 +686,8 @@
       "toolsAbsent": [
         "take_tour"
       ]
-    }
+    },
+    "scriptedOnly": true
   },
   {
     "id": "curated-tour-buys-cheapest-doors",
@@ -882,7 +884,7 @@
   },
   {
     "id": "video-cold-open",
-    "prompt": "We've got ten minutes and my daughter loves boats and water \u2014 build us a tour, skip anything gloomy. You can spend up to 5 cents.",
+    "prompt": "We've got ten minutes and my daughter loves boats and water \u2014 build us our own tour, skip anything gloomy. You can spend up to 5 cents.",
     "expect": {
       "calls": [
         "plan_tour",

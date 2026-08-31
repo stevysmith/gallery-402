@@ -12,7 +12,7 @@ Times are targets; trim recordings to fit, never the other way.
 
 **0:00 – 0:10 · COLD OPEN — recording R1**
 Screen: ChatGPT desktop (Work mode), museum already open in the in-app browser.
-Type: **"We've got ten minutes and my daughter loves boats and water — build us a tour, skip anything gloomy. You can spend up to 5 cents."** Send.
+Type: **"We've got ten minutes and my daughter loves boats and water — build us our own tour, skip anything gloomy. You can spend up to 5 cents."** Send.
 Cut before the reply finishes streaming.
 
 > VO: "This museum charges admission at every door. My agent is about to pay it —
