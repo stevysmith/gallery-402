@@ -10,19 +10,24 @@
 export type Segment =
   | { kind: 'card'; comp: 'Title' | 'X402Flow' | 'EndCard'; duration: number }
   | { kind: 'clip'; src: string; startFrom: number; duration: number; label: string }
+  | { kind: 'still'; src: string; duration: number; label: string }
 
 export const VO_FILE = 'vo.m4a' // drop your voice take in video/assets/
 
 export const EDL: Segment[] = [
   // 0:00 cold open — R1: prompt typed, jump-cut to the ask, "Yes", museum moving
-  { kind: 'clip', src: 'r1-chatgpt.mov', startFrom: 0, duration: 28, label: 'cold open' },
+  { kind: 'clip', src: 'r1-chatgpt.mp4', startFrom: 0, duration: 28, label: 'cold open' },
   { kind: 'card', comp: 'Title', duration: 8 },
   { kind: 'card', comp: 'X402Flow', duration: 16 }, // trims the 20s render on the outro
-  // 0:52 proof it's real — R2: drip, buy, ledger, settle, enter, Basescan
-  { kind: 'clip', src: 'r2-chrome.mov', startFrom: 0, duration: 30, label: 'human path' },
+  // 0:52 proof it's real — R2: drip, buy, ledger settles…
+  { kind: 'clip', src: 'r2-chrome.mp4', startFrom: 0, duration: 13.5, label: 'human path: pay' },
+  // …the transaction itself (basescan refuses headless filming; a still works)
+  { kind: 'still', src: 'basescan.jpg', duration: 4, label: 'the settlement' },
+  // …then walk in to the Great Wave at true size
+  { kind: 'clip', src: 'r2-chrome.mp4', startFrom: 13.5, duration: 9.5, label: 'human path: enter' },
   // 1:22 back to the agent — R1 continued: tour runs, docent notes, save_tour
-  { kind: 'clip', src: 'r1-chatgpt.mov', startFrom: 28, duration: 40, label: 'agent path' },
+  { kind: 'clip', src: 'r1-chatgpt.mp4', startFrom: 28, duration: 40, label: 'agent path' },
   // 2:02 the living surface — R3
-  { kind: 'clip', src: 'r3-surface.mov', startFrom: 0, duration: 20, label: 'surface' },
+  { kind: 'clip', src: 'r3-surface.mp4', startFrom: 0, duration: 16.5, label: 'surface' },
   { kind: 'card', comp: 'EndCard', duration: 12 },
 ]

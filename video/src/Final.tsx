@@ -2,6 +2,7 @@ import { AbsoluteFill, Audio, OffthreadVideo, Sequence, interpolate, staticFile,
 import { Title } from './Title'
 import { X402Flow } from './X402Flow'
 import { EndCard } from './EndCard'
+import { Img } from 'remotion'
 import { EDL, VO_FILE, type Segment } from './edits'
 import { T } from './theme'
 
@@ -21,6 +22,18 @@ const Dip = () => {
   return <AbsoluteFill style={{ background: T.wall, opacity: 1 - o, pointerEvents: 'none' }} />
 }
 
+/** A photograph with a slow push-in, for pages that refuse to be filmed. */
+const Still = ({ src }: { src: string }) => {
+  const frame = useCurrentFrame()
+  const { durationInFrames } = useVideoConfig()
+  const scale = interpolate(frame, [0, durationInFrames], [1.0, 1.07])
+  return (
+    <AbsoluteFill style={{ background: '#fff', overflow: 'hidden' }}>
+      <Img src={staticFile(src)} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', transform: `scale(${scale})` }} />
+    </AbsoluteFill>
+  )
+}
+
 export const Final = () => {
   let at = 0
   return (
@@ -31,7 +44,9 @@ export const Final = () => {
         at += frames
         return (
           <Sequence key={i} from={from} durationInFrames={frames}>
-            {seg.kind === 'card' ? (
+            {seg.kind === 'still' ? (
+              <Still src={seg.src} />
+            ) : seg.kind === 'card' ? (
               (() => { const C = CARDS[seg.comp]; return <C /> })()
             ) : (
               <OffthreadVideo
