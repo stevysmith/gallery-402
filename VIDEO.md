@@ -12,7 +12,7 @@ Times are targets; trim recordings to fit, never the other way.
 
 **0:00 – 0:10 · COLD OPEN — recording R1**
 Screen: ChatGPT desktop (Work mode), museum already open in the in-app browser.
-Type: **"Take me on a tour of the museum — you can spend up to 5 cents."** Send.
+Type: **"We've got ten minutes and my daughter loves boats and water — build us a tour, skip anything gloomy. You can spend up to 5 cents."** Send.
 Cut before the reply finishes streaming.
 
 > VO: "This museum charges admission at every door. My agent is about to pay it —
@@ -56,7 +56,10 @@ day-pass price, **asks permission to spend**, then calls fund_wallet /
 buy_ticket / enter_wing / tour_step — the museum moving by itself, ledger rows
 marked `agent`. End on save_tour publishing the keepsake page; open the link.
 
-> VO: "Now the same museum, driven through its tools. ChatGPT reads the page's
+> VO: "Now the same museum, driven through its tools. Notice this tour is not one
+> the museum wrote — no curator planned boats, for a ten-year-old, in ten
+> minutes. ChatGPT composed it: the agent knows the visitor, the page knows the
+> collection, and plan_tour is where they meet. It reads the page's
 > WebMCP surface — not the pixels — sees what each door costs, and asks before it
 > spends: the human sets the allowance, the agent operates inside it. Then it
 > pays, walks the rooms, and saves the visit as a page we keep. Every row in that
