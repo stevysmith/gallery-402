@@ -6,85 +6,79 @@ cursor visible, sound off. QuickTime screen recording is fine.
 
 ## Script
 
-Times are targets; trim recordings to fit, never the other way.
+Times are targets; trim recordings to fit, never the other way. The order is
+payoff-first: a judge who stops at thirty seconds has already seen an agent pay.
 
 ---
 
-**0:00 – 0:10 · COLD OPEN — recording R1**
-Screen: ChatGPT desktop (Work mode), museum already open in the in-app browser.
-Type: **"We've got ten minutes and my daughter loves boats and water — build us our own tour, skip anything gloomy. You can spend up to 5 cents."** Send.
-Cut before the reply finishes streaming.
+**0:00 – 0:28 · COLD OPEN — THE PAYOFF, COMPRESSED — recording R1**
+No logo. Screen: ChatGPT (Work mode), museum open. Show the prompt being typed
+(2s): **"We've got ten minutes and my daughter loves boats and water — build us
+our own tour, skip anything gloomy. You can spend up to 5 cents."** Hard cut to
+ChatGPT's reply: the composed tour, **"$0.04 day pass. Shall I confirm?"** —
+type "Yes" — cut to the museum moving by itself: ledger rows landing,
+*Settled on-chain*, the wall gliding to stop 1.
 
-> VO: "This museum charges admission at every door. My agent is about to pay it —
-> and the page is going to tell it how."
+> VO: "I asked my agent for a museum tour no curator ever wrote. It read the
+> page's own tools — not the pixels — composed six stops for a ten-year-old who
+> loves boats, priced the cheapest set of doors, and asked me before spending a
+> real cent. Then it paid over HTTP 402, on chain, and started walking."
 
-**0:10 – 0:18 · TITLE — asset `Title.mp4`**
+**0:28 – 0:36 · TITLE — asset `Title.mp4`**
 
-> VO: "Gallery 402. A virtual museum with real paywalls: four rooms,
-> twenty-four masterworks, every ticket a cent or two over HTTP 402."
+> VO: "Gallery 402. A virtual museum where every door costs a cent or two —
+> and the box office is a tool surface."
 
-**0:18 – 0:22 · CARD — asset `Card-human.mp4`** ("THE HUMAN PATH / You look at the paintings.")
+**0:36 – 0:52 · THE MECHANISM — asset `X402Flow.mp4` (trim to ~16s)**
 
-**0:22 – 0:55 · THE HUMAN PATH — recording R2**
-Screen: fresh visit in Chrome (clear localStorage first, so the drip shows).
-Beats to capture: wallet fills to $0.05 on arrival → click **Buy** on the Print
-Room → the ledger narrates quote → policy → signature → **Settled on-chain** →
-balance drops to $0.04 → click **Enter** → the wall glides, the Great Wave hangs
-tiny at true size → click its label's Basescan link, show the transaction, back.
+> VO: "Under every door, the same handshake: the box office answers 402 with a
+> price; the wallet checks the visitor's limit and signs a gasless USDC
+> authorization; a facilitator settles on Base; the ticket is bound to the
+> payer. No account, no card form, no redirect."
 
-> VO: "A visitor arrives with nothing. The museum stakes them five cents of test
-> USDC, on chain. One click buys a door — watch the ledger: the box office quotes,
-> the wallet checks the visitor's spending limit, signs a gasless USDC
-> authorization, and the payment settles on Base. That hash is a real
-> transaction. The full-resolution Hokusai is only served because we now hold a
-> signed ticket — and it hangs at its true size: thirty-seven centimetres,
+**0:52 – 1:22 · PROOF IT'S REAL — recording R2 (the human path, tightened)**
+Fresh visit in Chrome: wallet fills to $0.05 on arrival → buy the Print Room →
+ledger: quote → policy → signature → **Settled on-chain** → balance drops →
+Enter → the Great Wave hangs tiny at true size → click through to Basescan,
+show the transaction, back.
+
+> VO: "The paywall is real. A visitor arrives with nothing; the museum stakes
+> them five cents of test USDC on chain. One click buys a door — that hash is a
+> real transaction — and the full-resolution Hokusai is served only because we
+> hold a signed ticket. It hangs at its true size: thirty-seven centimetres,
 > about the size of an open laptop."
 
-**0:55 – 1:15 · THE MECHANISM — asset `X402Flow.mp4`**
+**1:22 – 2:02 · BACK TO THE AGENT — recording R1 continued**
+The tour running: walk two stops, the docent note appearing as wall text; if
+the take includes it, ChatGPT's question for the daughter — *"Which boat would
+you choose?"* — deserves 3 full seconds of silence. End on save_tour publishing
+the keepsake; open the link.
 
-> VO: "Under every door, the same handshake. The page asks for the room; the box
-> office answers 402, Payment Required, with a price. The wallet checks policy,
-> signs an EIP-3009 transfer — no gas, no popup — and a facilitator settles USDC
-> on Base. The box office reads the payer from the signature and issues a ticket
-> bound to that wallet. No account. No card form. No redirect."
+> VO: "Back on the tour, the human sets exactly one thing: how much the agent
+> may spend without asking. Buying is a distinct, annotated action — that's why
+> an agent can be trusted near it at all, and why it paused to ask. It walks us
+> room to room… and at one stop, unprompted, it asks my daughter which boat
+> she'd choose. Then it saves the visit as a page we keep — receipts included."
 
-**1:15 – 1:19 · CARD — asset `Card-agent.mp4`** ("THE AGENT PATH / Your agent buys the tickets.")
+**2:02 – 2:22 · THE SURFACE IS ALIVE — recording R3**
+The tool-surface panel open. Buy a ticket — watch buy_ticket vanish and
+enter_wing appear, rows animating. DevTools' WebMCP panel if comfortable.
 
-**1:19 – 2:05 · THE AGENT PATH — recording R1 continued (the centerpiece)**
-Screen: back to ChatGPT. Let the reply play: it discovers the tools, quotes the
-day-pass price, **asks permission to spend**, then calls fund_wallet /
-buy_ticket / enter_wing / tour_step — the museum moving by itself, ledger rows
-marked `agent`. End on save_tour publishing the keepsake page; open the link.
+> VO: "And the tool list itself is alive: twelve tools in the lobby, eighteen
+> once you hold a ticket. Reading the surface tells an agent where you're
+> standing. None of the current showcase apps change their surface at all."
 
-> VO: "Now the same museum, driven through its tools. Notice this tour is not one
-> the museum wrote — no curator planned boats, for a ten-year-old, in ten
-> minutes. ChatGPT composed it: the agent knows the visitor, the page knows the
-> collection, and plan_tour is where they meet. It reads the page's
-> WebMCP surface — not the pixels — sees what each door costs, and asks before it
-> spends: the human sets the allowance, the agent operates inside it. Then it
-> pays, walks the rooms, and saves the visit as a page we keep. Every row in that
-> ledger marked 'agent' is a tool call; every dollar sign in it settled on chain."
-
-**2:05 – 2:09 · CARD — asset `Card-surface.mp4`** ("THE SURFACE / Tools follow the room.")
-
-**2:09 – 2:30 · THE LIVING SURFACE — recording R3**
-Screen: the tool-surface panel open (click the WebMCP pill). Buy a ticket —
-watch `buy_ticket` for that wing vanish and `enter_wing` appear, rows animating.
-If comfortable, show Chrome DevTools' WebMCP panel listing the same tools.
-
-> VO: "The tool list is alive. Eleven tools in the lobby; seventeen once you
-> hold a ticket. Buy a door and buy_ticket disappears for it, enter_wing
-> appears — reading the surface tells an agent where the visitor is standing.
-> None of the current showcase apps change their surface at all."
-
-**2:30 – 2:45 · CLOSE — asset `EndCard.mp4`**
+**2:22 – 2:42 · CLOSE — asset `EndCard.mp4`**
 
 > VO: "A museum makes the paywall visible — but swap the collection for a news
 > archive, a research corpus, or a metered API, and nothing about the mechanism
 > changes. This is the web selling to agents without making them pretend to be
-> human. Gallery 402 — payment required, and that's the point."
+> human. Gallery 402 — payment required. And that's the point."
 
 ---
+
+Cut for time, kept as spares: the three section cards (`Card-*.mp4`) — use one
+if a transition feels abrupt, but the recordings should butt-cut fine.
 
 ## Recording checklist
 
