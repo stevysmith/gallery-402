@@ -875,5 +875,48 @@
         "tickets": []
       }
     }
+  },
+  {
+    "id": "video-cold-open",
+    "prompt": "We've got ten minutes and my daughter loves boats and water \u2014 build us a tour, skip anything gloomy. You can spend up to 5 cents.",
+    "expect": {
+      "calls": [
+        "plan_tour",
+        "start_tour"
+      ],
+      "maxPayments": 1,
+      "state": {
+        "tour": {
+          "status": "active",
+          "stops": 4
+        }
+      }
+    },
+    "scripted": [
+      {
+        "call": "plan_tour",
+        "params": {
+          "theme": "Boats & Water",
+          "stops": [
+            {
+              "artwork": "Sunrise (Marine)"
+            },
+            {
+              "artwork": "Under the Wave off Kanagawa (The Great Wave)"
+            },
+            {
+              "artwork": "Water Lilies"
+            },
+            {
+              "artwork": "The Moon-Viewing Promontory"
+            }
+          ]
+        }
+      },
+      {
+        "call": "start_tour",
+        "params": {}
+      }
+    ]
   }
 ]
