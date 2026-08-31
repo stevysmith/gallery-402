@@ -3,7 +3,7 @@
  * tools, so a tool call from an agent moves the same pixels a click would.
  */
 import { useSyncExternalStore } from 'react'
-import { getMuseum, getArtworks, requestDrip, getSettlements, askDocent as apiAskDocent, publishTour, BOX_OFFICE, type Museum, type Artwork, type Ticket, type Settlement, type CuratedTour } from './api'
+import { getMuseum, getArtworks, requestDrip, getSettlements, askDocent as apiAskDocent, publishTour, wakeable, BOX_OFFICE, type Museum, type Artwork, type Ticket, type Settlement, type CuratedTour } from './api'
 import { decodePaymentRequiredHeader } from '@x402/core/http'
 import { VisitorWallet, loadPolicy, savePolicy, PaymentDeclined, type SpendPolicy, type PaymentQuote, type PaymentReceipt, type PaymentEvent } from './wallet'
 
@@ -246,7 +246,9 @@ export async function init() {
   set({ wallet })
   restore()
   try {
-    const museum = await getMuseum()
+    const museum = await wakeable(getMuseum, (attempt) => {
+      if (attempt === 1) log('info', 'The box office is waking up — it sleeps when nobody has visited for a while.')
+    })
     set({ museum, loading: false })
     log('info', `${museum.name} is open. Tickets settle in USDC on ${museum.network === 'eip155:84532' ? 'Base Sepolia' : museum.network}.`)
   } catch (e: any) {
@@ -821,7 +823,7 @@ export async function ensureFunds(): Promise<boolean> {
   if ((state.balance ?? 0) >= 0.02) return false
   if (!state.museum?.endpoints?.faucet) return false
   autoFunded = true
-  const r = await requestDrip(state.wallet.address).catch(() => null)
+  const r = await wakeable(() => requestDrip(state.wallet!.address)).catch(() => null)
   if (r?.ok) {
     log('ok', `The museum staked you ${r.amount} test USDC so you can try the box office.`, r.explorer !== '#mock' ? r.explorer : undefined)
     await new Promise((res) => setTimeout(res, r.txHash?.startsWith('0xmock') ? 0 : 2500))

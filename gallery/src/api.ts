@@ -62,6 +62,35 @@ export type Ticket = {
   network?: string
 }
 
+/**
+ * The box office sleeps.
+ *
+ * On a free host it spins down after a few minutes idle, and the request that
+ * wakes it can be dropped or refused outright rather than merely held — so the
+ * first visitor after a quiet spell sees a hard failure, not a slow load. That
+ * is the worst possible first impression for a museum whose whole claim is that
+ * the payments are real.
+ *
+ * Retry a few times with growing gaps, and let the caller narrate the wait.
+ */
+export async function wakeable<T>(fn: () => Promise<T>, onWaking?: (attempt: number) => void): Promise<T> {
+  const gaps = [0, 1500, 4000, 8000, 12000]
+  let last: unknown
+  for (let i = 0; i < gaps.length; i++) {
+    if (gaps[i]) await new Promise((r) => setTimeout(r, gaps[i]))
+    try {
+      return await fn()
+    } catch (e) {
+      last = e
+      // A cold start looks like a network failure, not an HTTP error — an HTTP
+      // error means the box office is awake and genuinely objecting, so stop.
+      if (!(e instanceof TypeError)) throw e
+      onWaking?.(i + 1)
+    }
+  }
+  throw last
+}
+
 export async function getMuseum(): Promise<Museum> {
   const r = await fetch(`${BOX_OFFICE}/`)
   if (!r.ok) throw new Error(`box office unreachable (${r.status})`)
