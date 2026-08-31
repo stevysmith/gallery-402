@@ -1,0 +1,18 @@
+# The box office lives on a free tier that spins down when idle, and the first
+# request after a sleep can be dropped outright. Judging runs 4–21 Sept; a
+# judge's first impression should not be a cold start. This pings /health every
+# 10 minutes through the judging window (and until then, for demos).
+name: keep-warm
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    # stop after judging ends
+    if: ${{ github.event_name == 'workflow_dispatch' || github.run_started_at < '2026-09-22T00:00:00Z' }}
+    steps:
+      - name: ping the box office
+        run: |
+          curl -sf -m 60 https://gallery-402-box-office.onrender.com/health | grep -q '"ok":true'
