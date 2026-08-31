@@ -46,6 +46,9 @@ const results = await withHarness(async ({ browser, url }) => {
   const out = []
   for (const c of cases) {
     if (only && c.id !== only) continue
+    // Contract cases assert on exact error texts via scripted calls — they are
+    // not natural-language asks, so a live model is the wrong driver for them.
+    if (c.scriptedOnly) continue
     const t0 = Date.now()
     const { context, page } = await openVisitor(browser, url, { policy: c.policy })
     let failures = []

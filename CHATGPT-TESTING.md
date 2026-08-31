@@ -43,6 +43,13 @@ Then, per the docs, "each tool invocation receives a safety review before it run
 | our tools registered | 12 in the lobby, by name | same |
 | dynamic surface | ✅ 12 → 16 after `take_tour`, `start_tour` in / `take_tour` out | same |
 
+**The `executeTool` signature is still churning across builds.** We have now
+seen three conventions in the wild: ChatGPT requires `(name, object)`; Chrome
+151 takes `(name, jsonString)`; a newer origin-trial Chromium (Playwright's
+bundled build) requires `(RegisteredTool descriptor, jsonString)` — the
+descriptor from `getTools()`, which itself returns a Promise there. Pages are
+unaffected (registration is stable); anything *driving* tools should probe.
+
 Both differences are handled in agentk 0.6.2: it registers on whichever object
 exists (preferring `document`), and `executeTool` sends an object, falling back
 to a JSON string only if the host complains. A page written against

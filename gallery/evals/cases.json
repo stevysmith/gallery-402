@@ -829,7 +829,8 @@
       "state": {
         "screen": "lobby"
       }
-    }
+    },
+    "scriptedOnly": true
   },
   {
     "id": "error-names-the-valid-wings",
@@ -843,7 +844,8 @@
       ],
       "lastResultIsError": true,
       "lastResultIncludes": "van-gogh"
-    }
+    },
+    "scriptedOnly": true
   },
   {
     "id": "error-points-at-the-catalog",
@@ -857,7 +859,8 @@
       ],
       "lastResultIsError": true,
       "lastResultIncludes": "list_artworks"
-    }
+    },
+    "scriptedOnly": true
   },
   {
     "id": "present-ticket-forged",
@@ -874,7 +877,8 @@
       "state": {
         "tickets": []
       }
-    }
+    },
+    "scriptedOnly": true
   },
   {
     "id": "video-cold-open",

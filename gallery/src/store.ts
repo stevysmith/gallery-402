@@ -371,6 +371,13 @@ export async function buyTicket(id: string, via: 'agent' | 'human' = 'human'): P
   const m = state.museum
   if (!m) throw new Error('The box office is not reachable right now.')
   if (!state.wallet) throw new Error('Wallet not ready.')
+  // Wake a sleeping box office BEFORE any signature exists. A payment must
+  // never be auto-retried — if the retry carrying the signature dies after the
+  // facilitator settled, re-signing would pay twice — so the retries all happen
+  // here, on a harmless probe, and the paid flow runs against a warm server.
+  await wakeable(() => fetch(`${BOX_OFFICE}/health`).then((r) => { if (!r.ok) throw new TypeError('waking') }), (n) => {
+    if (n === 1) log('info', 'The box office is waking up — a moment.')
+  }).catch(() => {})
   const isPass = id === m.dayPass.id
   const wing = isPass ? null : wingOf(id)
   if (!isPass && !wing) throw new Error(`Unknown wing "${id}". Wings: ${m.wings.map((w) => w.id).join(', ')}, or "${m.dayPass.id}".`)
