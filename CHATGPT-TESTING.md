@@ -4,6 +4,18 @@ The judges' primary environment — and as of **Aug 31**, not the only ChatGPT
 one: OpenAI's browser lead announced WebMCP support in **ChatGPT Work's cloud
 browser**, with a Chrome extension "next". The cloud browser runs remotely, so
 `localhost` does not exist there — only a publicly deployed URL can be tested.
+
+**Verified in the cloud browser the day it was announced.** chatgpt.com in Work
+mode (5.6 Sol), asked for a boats-and-water tour of the live Stacktree URL: the
+cloud browser opened the museum, read the tools, composed a six-stop tour
+across three wings, priced the day pass as the cheapest set of doors ($0.04),
+asked before spending, then bought it over live testnet rails — faucet drip,
+settlement, "$0.01 remains" — and started the tour at Water Lilies. Two notes:
+the per-site gate exists here too, worded *"Allow ChatGPT to access stacktr.ee
+with the cloud browser?"* (Allow all relevant sites / Allow for this chat /
+Deny); and it excluded the Great Wave as too fierce for a child — agent
+judgment, not a tool limitation.
+
 (Everything below documents the desktop app's local in-app browser.) ChatGPT desktop is Electron on Chromium, so it
 can be driven over the Chrome DevTools Protocol.
 
