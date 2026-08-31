@@ -1,6 +1,10 @@
 # Testing in ChatGPT's in-app browser
 
-The judges' primary environment. ChatGPT desktop is Electron on Chromium, so it
+The judges' primary environment — and as of **Aug 31**, not the only ChatGPT
+one: OpenAI's browser lead announced WebMCP support in **ChatGPT Work's cloud
+browser**, with a Chrome extension "next". The cloud browser runs remotely, so
+`localhost` does not exist there — only a publicly deployed URL can be tested.
+(Everything below documents the desktop app's local in-app browser.) ChatGPT desktop is Electron on Chromium, so it
 can be driven over the Chrome DevTools Protocol.
 
 ## Setup (macOS)

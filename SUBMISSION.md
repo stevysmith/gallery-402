@@ -87,6 +87,7 @@ We know the difference between a winning demo and a product. The transaction is 
 
 ## Testing notes for judges
 
+- **ChatGPT Work, cloud browser (announced Aug 31):** open the live URL there — it's fully deployed, which is the only way to be testable in a remote browser.
 - **ChatGPT desktop:** open the live URL in the in-app browser; the "WebMCP · 12 tools" pill turns green. Ask: "Get me into the Van Gogh room."
 - **Chrome:** enable `chrome://flags/#enable-webmcp-testing` (or use the Stacktree URL, which carries the origin trial), then use the Model Context Tool Inspector or Gemini.
 - **Chrome DevTools:** the experimental WebMCP panel shows the registered tools live — watch the surface change as you buy a ticket and walk between rooms, and invoke any tool by hand. All 22 tools carry descriptions on every parameter.
