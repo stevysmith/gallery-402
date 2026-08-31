@@ -3,7 +3,7 @@ import { T } from './theme'
 import { display, ui, monoFam } from './fonts'
 
 const ROWS = [
-  { label: 'VISIT', value: 'stacktr.ee/p/86HeLDvH8p01xLpff43ybV' },
+  { label: 'VISIT', value: 'gallery402.stacktr.ee' },
   { label: 'REPO', value: 'github.com/stevysmith/gallery-402' },
   { label: 'LIBRARY', value: 'npm i @stevysmith/agentk' },
   { label: 'REAL SETTLEMENT', value: '0xfa53dc8d…907f · 0.02 USDC · Base' },

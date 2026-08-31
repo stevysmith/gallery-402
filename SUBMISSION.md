@@ -2,7 +2,7 @@
 
 > Working draft of the text description. Fill in the URLs before submitting.
 
-**Live URL:** https://stacktr.ee/p/86HeLDvH8p01xLpff43ybV/ · **Video:** _TBD (YouTube, < 3 min)_ · **Repo:** https://github.com/stevysmith/gallery-402
+**Live URL:** https://gallery402.stacktr.ee/ · **Video:** _TBD (YouTube, < 3 min)_ · **Repo:** https://github.com/stevysmith/gallery-402
 
 ## Sixty seconds, no wallet, no setup
 

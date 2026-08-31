@@ -13,7 +13,7 @@ cd gallery && npm install && npm run dev
 ```
 
 `gallery/.env` points at `http://localhost:4402` by default. The deployed pair:
-museum https://stacktr.ee/p/86HeLDvH8p01xLpff43ybV/ · box office https://gallery-402-box-office.onrender.com (free tier — first hit after idle takes ~30s; the page retries and says so).
+museum https://gallery402.stacktr.ee/ · box office https://gallery-402-box-office.onrender.com (free tier — first hit after idle takes ~30s; the page retries and says so).
 
 ## Where things are
 
