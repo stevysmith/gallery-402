@@ -9,3 +9,4 @@ box-office/.env
 test-results/
 playwright-report/
 **/evals/results/
+video/out/

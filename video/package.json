@@ -1,0 +1,22 @@
+{
+  "name": "gallery-402-video",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render Title out/Title.mp4 && remotion render X402Flow out/X402Flow.mp4 && remotion render Card-human out/Card-human.mp4 && remotion render Card-agent out/Card-agent.mp4 && remotion render Card-surface out/Card-surface.mp4 && remotion render EndCard out/EndCard.mp4",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.410",
+    "@remotion/google-fonts": "4.0.410",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "remotion": "4.0.410",
+    "zod": "3.24.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.0",
+    "typescript": "5.8.2"
+  }
+}
