@@ -88,8 +88,16 @@ If comfortable, show Chrome DevTools' WebMCP panel listing the same tools.
 
 ## Recording checklist
 
-- **R1** (ChatGPT): Work mode, Sol/Terra model, museum tab open, site permission
-  pre-granted (do a throwaway run first so the prompt doesn't interrupt the take).
+- **R1** (ChatGPT): Work mode, Sol/Terra model, site permission pre-granted (do a
+  throwaway run first so the prompt doesn't interrupt the take). **Open the LIVE
+  Stacktree URL in the in-app browser BEFORE starting a new Work chat** — the
+  thread binds to whichever tab it starts with and ignores later navigation; a
+  stale binding will silently drive the wrong page.
+  Alternative worth considering: record R1 on chatgpt.com's **cloud browser**
+  instead (announced Aug 31, verified working) — same prompt, and the "Cloud
+  browser" side panel showing the museum makes the remote-agent story visible.
+  Spare artifact either way: the cloud run already published a keepsake at
+  https://stacktr.ee/p/kn4w4M1hPFKLkjaddpFwnq/ — usable as a cutaway.
 - **R2** (Chrome): clear localStorage; box office pre-warmed (hit /health once
   ~1 min before recording so the free tier is awake).
 - **R3**: the surface panel open before you start; slow deliberate clicks.
