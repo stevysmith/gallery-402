@@ -15,11 +15,12 @@ export const finalDuration = () => Math.round(EDL.reduce((s, e) => s + e.duratio
 const Dip = () => {
   const frame = useCurrentFrame()
   const { durationInFrames } = useVideoConfig()
-  const o = Math.min(
+  // opaque at each boundary, transparent through the body of the segment
+  const o = Math.max(
     interpolate(frame, [0, 6], [1, 0], { extrapolateRight: 'clamp' }),
     interpolate(frame, [durationInFrames - 6, durationInFrames], [0, 1], { extrapolateLeft: 'clamp' }),
   )
-  return <AbsoluteFill style={{ background: T.wall, opacity: 1 - o, pointerEvents: 'none' }} />
+  return <AbsoluteFill style={{ background: T.wall, opacity: o, pointerEvents: 'none' }} />
 }
 
 /** A photograph with a slow push-in, for pages that refuse to be filmed. */
@@ -60,7 +61,7 @@ export const Final = () => {
           </Sequence>
         )
       })}
-      <Audio src={staticFile(VO_FILE)} />
+      {VO_FILE ? <Audio src={staticFile(VO_FILE)} /> : null}
     </AbsoluteFill>
   )
 }
