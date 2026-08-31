@@ -10,9 +10,9 @@ on:
 jobs:
   ping:
     runs-on: ubuntu-latest
-    # stop after judging ends
-    if: ${{ github.event_name == 'workflow_dispatch' || github.run_started_at < '2026-09-22T00:00:00Z' }}
     steps:
       - name: ping the box office
         run: |
+          # stop pinging after judging ends (21 Sept + a day of grace)
+          [ "$(date -u +%Y%m%d)" -gt 20260922 ] && exit 0
           curl -sf -m 60 https://gallery-402-box-office.onrender.com/health | grep -q '"ok":true'
