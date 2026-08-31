@@ -131,6 +131,17 @@ export const TOOLS: AgentKToolDef[] = [
     keywords: ['undo', 'back', 'revert', 'mistake'],
   },
   {
+    name: 'present_ticket',
+    label: 'Present a ticket',
+    description:
+      'Already paid? An agent with its own wallet can pay any door\u2019s HTTP 402 directly (see /.well-known/x402 on the box office) and present the returned ticket here \u2014 the museum honours it exactly like one bought in-page. Input: the ticket string.',
+    inputSchema: {
+      type: 'object',
+      required: ['ticket'],
+      properties: { ticket: { type: 'string', description: 'The "ticket" field from a box-office purchase response.' } },
+    },
+  },
+  {
     name: 'receipts',
     annotations: { readOnlyHint: true },
     label: 'Receipts & tickets',
@@ -315,6 +326,7 @@ export function useTools(): AgentKToolDef[] {
       if (t.name === 'spotlight' && !inWing) continue
       if (t.name === 'ask_docent' && !docentReady) continue
       if (t.name === 'undo' && !undoable) continue
+      if (t.name === 'present_ticket' && pass) continue
       list.push(t)
     }
     return list
@@ -470,6 +482,10 @@ function makeRunner(via: 'agent' | 'human') {
         if (!last) throw new Error('Nothing to undo yet.')
         const r = S.undoTo(last.id, via)
         return { ...r, note: r.moneyKept ? `Reverted. ${r.moneyKept} of admission stays spent — tickets are not refundable, which is why buying asks first.` : 'Reverted.' }
+      }
+      case 'present_ticket': {
+        const stub = await S.presentTicket(String(params.ticket ?? ''))
+        return { admitted: stub.wingName, expiresAt: stub.expiresAt, note: 'Honoured. enter_wing will now open the door.' }
       }
       case 'receipts':
         return {

@@ -203,6 +203,48 @@ export const ticketFor = (wing: string): Stub | null => {
   return ok(state.tickets['*']) ?? ok(state.tickets[wing]) ?? null
 }
 export const hasTicket = (wing: string) => !!ticketFor(wing)
+
+/**
+ * Admit a ticket bought OUTSIDE the page — an agent with its own wallet can
+ * pay the box office's 402 directly over HTTP and hand the museum its stub at
+ * the door, exactly like a human who bought online. The page can read the
+ * claims (they're just base64url JSON) but cannot verify the HMAC and doesn't
+ * try: the box office re-verifies on every gated fetch, so a forged ticket
+ * gets you a well-lit lobby and nothing else.
+ */
+export async function presentTicket(ticket: string): Promise<Stub> {
+  const m = state.museum
+  if (!m) throw new Error('The museum is still opening — try again in a moment.')
+  let claims: { w?: string; p?: string; exp?: number; tx?: string } = {}
+  try {
+    const body = ticket.split('.')[0].replace(/-/g, '+').replace(/_/g, '/')
+    claims = JSON.parse(atob(body))
+  } catch {
+    throw new Error(`That doesn't look like a ticket. Pay any door's 402 (e.g. GET ${BOX_OFFICE}/tickets/ukiyo-e) and present the "ticket" field from the response.`)
+  }
+  const wing = claims.w
+  if (!wing || typeof claims.exp !== 'number') throw new Error('Ticket is missing its claims (wing, expiry).')
+  if (claims.exp * 1000 < Date.now()) throw new Error('That ticket has expired. Tickets last the day they were bought.')
+  const isPass = wing === '*'
+  const w = isPass ? null : m.wings.find((x) => x.id === wing)
+  if (!isPass && !w) throw new Error(`Ticket names an unknown wing "${wing}".`)
+  const wingName = isPass ? m.dayPass.name : w!.name
+  // The only verification that matters: does the box office honour it?
+  const probe = isPass ? m.wings[0].id : wing
+  try {
+    await getArtworks(probe, ticket)
+  } catch {
+    throw new Error('The box office refused that ticket — wrong signature, or it was issued by a different box office.')
+  }
+  const stub: Stub = {
+    ticket, wing, wingName, price: '', payer: claims.p ?? 'anon',
+    expiresAt: new Date(claims.exp * 1000).toISOString(), txHash: claims.tx, at: Date.now(),
+  }
+  set((s) => ({ tickets: { ...s.tickets, [wing]: stub } }))
+  persist()
+  log('ok', `Ticket presented at the door: ${wingName}${claims.p && claims.p !== 'anon' ? ` · paid by ${claims.p.slice(0, 6)}…${claims.p.slice(-4)}` : ''} — bought outside the page, honoured inside it.`)
+  return stub
+}
 /** Change what's on the wall. Leaving an artwork clears its spotlight and the visitor's pointer. */
 function showView(view: View) {
   const before = currentArtwork()?.id

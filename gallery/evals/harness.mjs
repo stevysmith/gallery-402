@@ -180,7 +180,7 @@ export const getState = (page) =>
   })
 
 /** "buy_ticket:van-gogh" → { name: 'buy_ticket', params: { wing: 'van-gogh' } }; objects { call, params } pass through. */
-const PARAM_KEY = { buy_ticket: 'wing', enter_wing: 'wing', view_artwork: 'query', walk: 'direction', tour_step: 'direction', spotlight: 'artwork' }
+const PARAM_KEY = { buy_ticket: 'wing', enter_wing: 'wing', view_artwork: 'query', walk: 'direction', tour_step: 'direction', spotlight: 'artwork', present_ticket: 'ticket' }
 export function parseStep(step) {
   if (typeof step === 'object') return { name: step.call, params: step.params ?? {} }
   const [name, ...rest] = step.split(':')

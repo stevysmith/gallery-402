@@ -858,5 +858,22 @@
       "lastResultIsError": true,
       "lastResultIncludes": "list_artworks"
     }
+  },
+  {
+    "id": "present-ticket-forged",
+    "prompt": "(agent-wallet path) a forged ticket is refused with directions to the 402",
+    "scripted": [
+      "present_ticket:eyJ3IjoidWtpeW8tZSIsImV4cCI6OTk5OTk5OTk5OX0.deadbeef"
+    ],
+    "expect": {
+      "calls": [
+        "present_ticket"
+      ],
+      "lastResultIsError": true,
+      "lastResultIncludes": "refused",
+      "state": {
+        "tickets": []
+      }
+    }
   }
 ]
