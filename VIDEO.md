@@ -108,4 +108,27 @@ cd video && npm install && npm run render     # renders all five to video/out/
 palette (green wall, paper, brass), Instrument Serif + IBM Plex — they cut
 against the recordings without a seam.
 
-Assemble in any editor; the VO reads at ~140 wpm. Total: ~2:45.
+## Putting it together — Remotion packages the whole film
+
+Record picture and voice, drop the files in `video/assets/`, and the `Final`
+composition cuts the entire video from an edit table — no editing app needed.
+
+1. **Record the VO first** (radio-cut style): one take, reading the script at a
+   natural pace, QuickTime → File → New Audio Recording. Save as
+   `video/assets/vo.m4a`. Don't worry about hitting section timings exactly.
+2. **Record the three screen captures** (QuickTime → New Screen Recording,
+   1920×1080, generous head and tail on every take — trimming happens later):
+   `r1-chatgpt.mov` (desktop app, cold open + agent path in one sitting),
+   `r2-chrome.mov` (human path), `r3-surface.mov` (tool panel).
+3. **Tune the cut**: `video/src/edits.ts` is the edit decision list — one line
+   per segment with `startFrom` (seconds into your recording) and `duration`
+   (seconds on screen). Adjust to match your VO; `npm run studio` gives a live
+   preview with a scrubber.
+4. **Render**: `cd video && npm run render:final` → `out/gallery-402-submission.mp4`,
+   1080p/30 with dip-to-wall transitions between segments. Upload that file to
+   YouTube (public), thumbnail is `out/thumbnail.png`.
+
+Hand me the three recordings and the VO and I'll do step 3 — set the trim
+points against your voice take, render, and screenshot-check the cuts.
+
+The VO reads at ~140 wpm. Total: ~2:45.

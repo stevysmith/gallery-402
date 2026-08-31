@@ -10,3 +10,4 @@ test-results/
 playwright-report/
 **/evals/results/
 video/out/
+video/assets/

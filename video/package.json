@@ -5,7 +5,8 @@
   "scripts": {
     "studio": "remotion studio",
     "render": "remotion render Title out/Title.mp4 && remotion render X402Flow out/X402Flow.mp4 && remotion render Card-human out/Card-human.mp4 && remotion render Card-agent out/Card-agent.mp4 && remotion render Card-surface out/Card-surface.mp4 && remotion render EndCard out/EndCard.mp4",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "render:final": "remotion render Final out/gallery-402-submission.mp4"
   },
   "dependencies": {
     "@remotion/cli": "4.0.410",
