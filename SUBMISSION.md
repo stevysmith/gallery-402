@@ -21,6 +21,16 @@ Museums are visual: the whole point is to stand in front of the picture. Paying 
 
 That is the shape of a lot of the future web — content behind small, per-use prices, paid by agents on behalf of people — and WebMCP is the missing piece: a typed, page-provided surface so the agent can act *with* the site rather than *on* it.
 
+## The real problem this solves
+
+The web's business model assumes a human who can be advertised to, tracked, or made to sign up. Agents break all three. A crawler that reads your archive shows nobody an ad; a subscription flow assumes someone to fill the form; a login assumes an account holder. So publishers reach for the only lever left — block the agent — and the open web gets smaller. That is happening right now: Cloudflare shipped pay-per-crawl because "block everything" was the only alternative on offer.
+
+Per-use pricing is the way out, and it has been technically possible since HTTP 402 was reserved in 1997. What was missing is not the payment rail — x402 settles a median $0.028 call today across roughly 165 million transactions — but a way for a page to *tell an agent what it sells and let it buy without pretending to be a human*. That is exactly what WebMCP adds: a typed, page-provided surface where "this costs two cents" and "here is your receipt" are first-class actions rather than a checkout page to be screen-driven.
+
+A museum is the demonstration, not the market. The same three pieces — a 402 at the door, a typed tool surface, a ticket bound to the payer — are what a news archive, a research corpus, a legal database, a stock-photo library or a metered API needs. We chose a gallery because it makes the paywall *visible*: you can see precisely what you bought, at the resolution you paid for, and the transaction hash under it. Swap the collection for a paywalled archive and nothing about the mechanism changes.
+
+The alternative being built instead is agents with saved card details and human-shaped checkout flows, which is worse for everyone: the merchant can't price per use, the user can't cap spend, and the agent has to impersonate a person to transact at all.
+
 ## How it improves the experience
 
 - **Nothing leaves the room.** No checkout page, no redirect, no popup. The wall changes colour and the painting is there.
