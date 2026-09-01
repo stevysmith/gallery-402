@@ -31,9 +31,13 @@ export const EDL: Segment[] = [
   // …then walk in to the Great Wave at true size
   { kind: 'clip', src: 'r2-chrome.mp4', startFrom: 14, duration: 9, label: 'human path: enter' },
   // 1:22 back to the agent — R1 continued: tour runs, docent notes, save_tour
-  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 126, duration: 12, label: 'agent path: docent note hold' },
-  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 150, duration: 18, label: 'agent path: the walk (Lilies → Cliff Walk → Sunrise)' },
-  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 200, duration: 10, label: 'agent path: published' },
+  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 126, duration: 8, label: 'agent path: docent note hold', dipOut: false },
+  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 134, duration: 1.3, rate: 12.3, label: 'fast-forward to the walk', dipIn: false, dipOut: false },
+  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 150, duration: 18, label: 'agent path: the walk (Lilies → Cliff Walk → Sunrise)', dipIn: false, dipOut: false },
+  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 168, duration: 1.5, rate: 21.3, label: 'fast-forward to the publish', dipIn: false, dipOut: false },
+  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 200, duration: 8, label: 'agent path: published', dipIn: false },
+  // the payoff: the page the visit became — works, the agent's notes, receipts
+  { kind: 'clip', src: 'keepsake.mp4', startFrom: 1.5, duration: 11, label: 'the keepsake, scrolled' },
   // 2:02 the living surface — R3
   { kind: 'clip', src: 'r3-surface.mp4', startFrom: 4, duration: 12.5, label: 'surface' },
   { kind: 'card', comp: 'EndCard', duration: 12 },
