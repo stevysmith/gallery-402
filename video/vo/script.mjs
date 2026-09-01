@@ -32,10 +32,10 @@ export const CUES = [
     text: 'Then it publishes the visit as a page we keep — every stop, every note, every receipt, on one link.' },
   { id: '10b-keepsake', at: 126.5, slot: 8.8,
     text: 'Every note it wrote for her is on there, and the receipt at the bottom. That\'s the visit — not a screenshot of it.' },
-  // 2:15 – 2:29 surface
+  // 2:15 – 2:28 surface (camera pushes onto the box office at 2:20, tilts up to the panel at 2:24)
   { id: '11-surface', at: 135.3, slot: 13.2,
     text: 'And the tool list is alive: twelve tools in the lobby — buy a door and enter wing appears; step inside and there are eighteen. Reading the surface tells an agent where you\'re standing.' },
-  // 2:29 – 2:48 close (end card from 2:29)
+  // 2:28 – 2:48 close (end card from 2:28.3; the cue starts on its first frames, the URLs then sit ~1.5s in silence)
   { id: '12-close', at: 148.5, slot: 19.3,
     text: 'A museum just makes the paywall visible. Swap the collection for a news archive, a research corpus, a metered API — nothing about the mechanism changes. This is the web selling to agents without making them pretend to be human. Gallery four-oh-two. Payment required — and that\'s the point.' },
 ]

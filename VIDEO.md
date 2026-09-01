@@ -71,17 +71,20 @@ keepsake page scrolling 2:03–2:15, ending on the receipt.*
 > *(over the scroll, 2:06)* "Every note it wrote for her is on there, and the
 > receipt at the bottom. That's the visit — not a screenshot of it."
 
-**2:15 – 2:29 · THE SURFACE IS ALIVE**
+**2:15 – 2:28 · THE SURFACE IS ALIVE**
 *Picture: the tool panel open at 12 tools → buy the Dutch Cabinet → the count
-ticks to 14 and `enter_wing` appears in the list.*
+ticks to 14 and `enter_wing` appears in the list. The camera pushes 1.5× onto
+the box office as the Buy lands (2:20), holds while `enter_wing` slides into
+the panel (2:22), then tilts up to the panel and the header pill for the tick
+to 14 (2:24) — the panel text is too small to read at 1080p otherwise.*
 
 > VO: "And the tool list is alive: twelve tools in the lobby — buy a door and
 > enter_wing appears; step inside and there are eighteen. Reading the surface
-> tells an agent where you're standing." *(12.1s over a 14s clip)*
+> tells an agent where you're standing." *(12.1s over a 13.5s clip)*
 
-**2:29 – 2:48 · CLOSE — end card**
+**2:28 – 2:48 · CLOSE — end card**
 
-> VO *(starts on the last frames of the panel, 2:28)*: "A museum just makes
+> VO *(starts on the first frames of the card, 2:28.5)*: "A museum just makes
 > the paywall visible. Swap the collection for a news archive, a research
 > corpus, a metered API — nothing about the mechanism changes. This is the web
 > selling to agents without making them pretend to be human. Gallery 402.
@@ -136,6 +139,8 @@ voice over it — no editing app needed.
    it has before the next cue. `--only <id>` regenerates a single cue after a
    text change; `--voice Daniel` is the other British option.
 2. **Conform**: with `VO = 'cues'` in `edits.ts`, every cue plays at its `at`.
+   A clip can carry `cam` keyframes (`{ at, scale, x, y }`, seconds into the
+   segment) for a push-in or tilt when the recording's text is too small.
    If the table says a cue overruns, nudge a `duration` in the EDL and the
    `at`/`slot` of the cues after it (they are absolute seconds, so a change
    moves everything downstream) — or re-run that cue with `--speed 1.05`.

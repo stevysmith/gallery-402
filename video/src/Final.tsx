@@ -1,9 +1,9 @@
-import { AbsoluteFill, Audio, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig } from 'remotion'
+import { AbsoluteFill, Audio, Easing, OffthreadVideo, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig } from 'remotion'
 import { Title } from './Title'
 import { X402Flow } from './X402Flow'
 import { EndCard } from './EndCard'
 import { Img } from 'remotion'
-import { EDL, VO, type Segment } from './edits'
+import { EDL, VO, type Cam, type Segment } from './edits'
 import { CUES } from '../vo/script.mjs'
 import { T } from './theme'
 import { ui } from './fonts'
@@ -33,6 +33,32 @@ const Still = ({ src }: { src: string }) => {
   return (
     <AbsoluteFill style={{ background: '#fff', overflow: 'hidden' }}>
       <Img src={staticFile(src)} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', transform: `scale(${scale})` }} />
+    </AbsoluteFill>
+  )
+}
+
+/** A screen recording, optionally with a camera move (see Cam in edits.ts). */
+const Clip = ({ seg }: { seg: Extract<Segment, { kind: 'clip' }> }) => {
+  const frame = useCurrentFrame()
+  const { fps } = useVideoConfig()
+  const cam = seg.cam
+  let camStyle = {}
+  if (cam?.length) {
+    const t = frame / fps
+    const ease = Easing.inOut(Easing.cubic)
+    const pick = (f: (k: Cam) => number) =>
+      cam.length === 1 ? f(cam[0]) : interpolate(t, cam.map((k) => k.at), cam.map(f), { easing: ease, extrapolateLeft: 'clamp', extrapolateRight: 'clamp' })
+    camStyle = { transform: `scale(${pick((k) => k.scale)})`, transformOrigin: `${pick((k) => k.x)}% ${pick((k) => k.y)}%` }
+  }
+  return (
+    <AbsoluteFill style={{ background: T.wall, overflow: 'hidden' }}>
+      <OffthreadVideo
+        src={staticFile(seg.src)}
+        startFrom={Math.round(seg.startFrom * FPS)}
+        playbackRate={seg.rate ?? 1}
+        muted
+        style={{ width: '100%', height: '100%', objectFit: 'contain', background: T.wall, ...camStyle }}
+      />
     </AbsoluteFill>
   )
 }
@@ -77,13 +103,7 @@ export const Final = () => {
             ) : seg.kind === 'card' ? (
               (() => { const C = CARDS[seg.comp]; return <C /> })()
             ) : (
-              <OffthreadVideo
-                src={staticFile(seg.src)}
-                startFrom={Math.round(seg.startFrom * FPS)}
-                playbackRate={seg.rate ?? 1}
-                muted
-                style={{ width: '100%', height: '100%', objectFit: 'contain', background: T.wall }}
-              />
+              <Clip seg={seg} />
             )}
             {seg.kind === 'clip' && seg.caption ? <Caption text={seg.caption} hold={seg.captionHold} /> : null}
             <Dip dipIn={seg.kind === 'clip' ? seg.dipIn : undefined} dipOut={seg.kind === 'clip' ? seg.dipOut : undefined} />
