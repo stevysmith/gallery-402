@@ -3,7 +3,8 @@ import { Title } from './Title'
 import { X402Flow } from './X402Flow'
 import { EndCard } from './EndCard'
 import { Img } from 'remotion'
-import { EDL, VO_FILE, type Segment } from './edits'
+import { EDL, VO, type Segment } from './edits'
+import { CUES } from '../vo/script.mjs'
 import { T } from './theme'
 import { ui } from './fonts'
 
@@ -37,12 +38,14 @@ const Still = ({ src }: { src: string }) => {
 }
 
 /** A muted-viewer's guide: one small chip, lower left, per key segment. */
-const Caption = ({ text }: { text: string }) => {
+const Caption = ({ text, hold }: { text: string; hold?: number }) => {
   const frame = useCurrentFrame()
   const { fps, durationInFrames } = useVideoConfig()
+  // gone by `hold` seconds if given, else on the segment's last frames
+  const end = hold ? Math.min(durationInFrames, hold * fps) : durationInFrames
   const o = Math.min(
     interpolate(frame, [0.4 * fps, 0.9 * fps], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
-    interpolate(frame, [durationInFrames - 0.6 * fps, durationInFrames - 0.15 * fps], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
+    interpolate(frame, [end - 0.6 * fps, end - 0.15 * fps], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
   )
   return (
     <div
@@ -82,12 +85,18 @@ export const Final = () => {
                 style={{ width: '100%', height: '100%', objectFit: 'contain', background: T.wall }}
               />
             )}
-            {seg.kind === 'clip' && seg.caption ? <Caption text={seg.caption} /> : null}
+            {seg.kind === 'clip' && seg.caption ? <Caption text={seg.caption} hold={seg.captionHold} /> : null}
             <Dip dipIn={seg.kind === 'clip' ? seg.dipIn : undefined} dipOut={seg.kind === 'clip' ? seg.dipOut : undefined} />
           </Sequence>
         )
       })}
-      {VO_FILE ? <Audio src={staticFile(VO_FILE)} /> : null}
+      {VO === 'cues'
+        ? CUES.map((c) => (
+            <Sequence key={c.id} from={Math.round(c.at * FPS)}>
+              <Audio src={staticFile(`vo/${c.id}.mp3`)} />
+            </Sequence>
+          ))
+        : VO ? <Audio src={staticFile(VO)} /> : null}
     </AbsoluteFill>
   )
 }
