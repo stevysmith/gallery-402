@@ -9,7 +9,7 @@
  */
 export type Segment =
   | { kind: 'card'; comp: 'Title' | 'X402Flow' | 'EndCard'; duration: number }
-  | { kind: 'clip'; src: string; startFrom: number; duration: number; label: string; rate?: number; dipIn?: boolean; dipOut?: boolean }
+  | { kind: 'clip'; src: string; startFrom: number; duration: number; label: string; rate?: number; dipIn?: boolean; dipOut?: boolean; caption?: string }
   | { kind: 'still'; src: string; duration: number; label: string }
 
 /** Drop the voice take in video/assets/ then flip this on for the final render. */
@@ -18,27 +18,27 @@ export const VO_FILE: string | null = null // 'vo.m4a'
 export const EDL: Segment[] = [
   // 0:00 cold open — the clean re-take (take2: sidebar collapsed, fresh chat,
   // museum staged at gallery402.stacktr.ee before rolling)
-  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 2, duration: 10, label: 'cold open: the ask typed', dipOut: false },
+  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 2, duration: 10, label: 'cold open: the ask typed', dipOut: false, caption: 'ChatGPT Work · the museum is the tab beside it' },
   // the 84 thinking seconds, fast-forwarded — the skip becomes the agent working
-  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 12, duration: 3, rate: 28, label: 'cold open: agent working (28×)', dipIn: false, dipOut: false },
-  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 96, duration: 26, label: 'cold open: ask → yes → purchase → Water Lilies', dipIn: false },
+  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 12, duration: 3, rate: 28, label: 'cold open: agent working (28×)', dipIn: false, dipOut: false, caption: '28× — the agent composing a tour no curator wrote' },
+  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 96, duration: 26, label: 'cold open: ask → yes → purchase → Water Lilies', dipIn: false, caption: 'it asks before spending — then pays over HTTP 402' },
   { kind: 'card', comp: 'Title', duration: 8 },
   { kind: 'card', comp: 'X402Flow', duration: 19 }, // through the closing line ('No account. No card form. No redirect.')
   // 0:52 proof it's real — R2: drip, buy, ledger settles…
-  { kind: 'clip', src: 'r2-chrome.mp4', startFrom: 5, duration: 9, label: 'human path: pay' },
+  { kind: 'clip', src: 'r2-chrome.mp4', startFrom: 5, duration: 9, label: 'human path: pay', caption: 'no agent needed: one click, a real 402, settled on-chain' },
   // …the transaction itself (basescan refuses headless filming; a still works)
   { kind: 'still', src: 'basescan.jpg', duration: 4, label: 'the settlement' },
   // …then walk in to the Great Wave at true size
-  { kind: 'clip', src: 'r2-chrome.mp4', startFrom: 14, duration: 9, label: 'human path: enter' },
+  { kind: 'clip', src: 'r2-chrome.mp4', startFrom: 14, duration: 9, label: 'human path: enter', caption: 'full resolution only with a ticket — hung at true size' },
   // 1:22 back to the agent — R1 continued: tour runs, docent notes, save_tour
-  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 126, duration: 8, label: 'agent path: docent note hold', dipOut: false },
+  { kind: 'clip', src: 'r1-take2.mp4', startFrom: 126, duration: 8, label: 'agent path: docent note hold', dipOut: false, caption: 'notes written for a ten-year-old who loves boats' },
   { kind: 'clip', src: 'r1-take2.mp4', startFrom: 134, duration: 1.3, rate: 12.3, label: 'fast-forward to the walk', dipIn: false, dipOut: false },
   { kind: 'clip', src: 'r1-take2.mp4', startFrom: 150, duration: 18, label: 'agent path: the walk (Lilies → Cliff Walk → Sunrise)', dipIn: false, dipOut: false },
   { kind: 'clip', src: 'r1-take2.mp4', startFrom: 168, duration: 1.5, rate: 21.3, label: 'fast-forward to the publish', dipIn: false, dipOut: false },
   { kind: 'clip', src: 'r1-take2.mp4', startFrom: 200, duration: 8, label: 'agent path: published', dipIn: false },
   // the payoff: the page the visit became — works, the agent's notes, receipts
-  { kind: 'clip', src: 'keepsake.mp4', startFrom: 1.5, duration: 11, label: 'the keepsake, scrolled' },
+  { kind: 'clip', src: 'keepsake.mp4', startFrom: 1.5, duration: 11, label: 'the keepsake, scrolled', caption: 'the page the visit became — notes and receipts included' },
   // 2:02 the living surface — R3
-  { kind: 'clip', src: 'r3-surface.mp4', startFrom: 4, duration: 12.5, label: 'surface' },
+  { kind: 'clip', src: 'r3-surface.mp4', startFrom: 4, duration: 12.5, label: 'surface', caption: 'the tool list is alive — buying reshapes what agents can do' },
   { kind: 'card', comp: 'EndCard', duration: 12 },
 ]

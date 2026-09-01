@@ -5,6 +5,7 @@ import { EndCard } from './EndCard'
 import { Img } from 'remotion'
 import { EDL, VO_FILE, type Segment } from './edits'
 import { T } from './theme'
+import { ui } from './fonts'
 
 const FPS = 30
 const CARDS = { Title, X402Flow, EndCard } as const
@@ -35,6 +36,29 @@ const Still = ({ src }: { src: string }) => {
   )
 }
 
+/** A muted-viewer's guide: one small chip, lower left, per key segment. */
+const Caption = ({ text }: { text: string }) => {
+  const frame = useCurrentFrame()
+  const { fps, durationInFrames } = useVideoConfig()
+  const o = Math.min(
+    interpolate(frame, [0.4 * fps, 0.9 * fps], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
+    interpolate(frame, [durationInFrames - 0.6 * fps, durationInFrames - 0.15 * fps], [1, 0], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }),
+  )
+  return (
+    <div
+      style={{
+        position: 'absolute', left: 48, bottom: 42, opacity: o,
+        transform: `translateY(${(1 - o) * 10}px)`,
+        background: 'rgba(23,48,42,0.92)', border: `1px solid ${T.brass}`,
+        color: T.paper, fontFamily: ui, fontSize: 26, fontWeight: 500,
+        padding: '10px 20px', borderRadius: 8, letterSpacing: '0.01em',
+      }}
+    >
+      {text}
+    </div>
+  )
+}
+
 export const Final = () => {
   let at = 0
   return (
@@ -58,6 +82,7 @@ export const Final = () => {
                 style={{ width: '100%', height: '100%', objectFit: 'contain', background: T.wall }}
               />
             )}
+            {seg.kind === 'clip' && seg.caption ? <Caption text={seg.caption} /> : null}
             <Dip dipIn={seg.kind === 'clip' ? seg.dipIn : undefined} dipOut={seg.kind === 'clip' ? seg.dipOut : undefined} />
           </Sequence>
         )
