@@ -48,6 +48,16 @@ agent-browser eval "JSON.stringify({ mc: typeof document.modelContext })"
 
 Then, per the docs, "each tool invocation receives a safety review before it runs" — in our run ChatGPT paused and asked the human to confirm funding the wallet and paying, on top of the museum's own spending policy. A visitor can see what a site offers via **Site tools** in the browser's address bar.
 
+## A fifth client: agent-browser's native WebMCP bridge
+
+agent-browser ≥0.36 (`npm i -g agent-browser`) exposes any page's WebMCP surface
+from the terminal — `webmcp list`, `webmcp invoke <tool> --params <json>`. The
+museum worked through it first try, including a live settlement, with no
+museum-specific code on either side. Two protocol notes: it launches its own
+Chromium with the WebMCP flag enabled (no origin trial needed), and long-running
+tools (a payment awaiting settlement) want `--timeout` raised or `--detach` +
+`webmcp result <id>`.
+
 ## What we verified there
 
 | | ChatGPT in-app browser | Chrome 151 |
