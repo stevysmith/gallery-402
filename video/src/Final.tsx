@@ -12,13 +12,13 @@ const CARDS = { Title, X402Flow, EndCard } as const
 export const finalDuration = () => Math.round(EDL.reduce((s, e) => s + e.duration, 0) * FPS)
 
 /** A 12-frame dip-to-wall between segments, so butt cuts don't jar. */
-const Dip = () => {
+const Dip = ({ dipIn = true, dipOut = true }: { dipIn?: boolean; dipOut?: boolean }) => {
   const frame = useCurrentFrame()
   const { durationInFrames } = useVideoConfig()
   // opaque at each boundary, transparent through the body of the segment
   const o = Math.max(
-    interpolate(frame, [0, 6], [1, 0], { extrapolateRight: 'clamp' }),
-    interpolate(frame, [durationInFrames - 6, durationInFrames], [0, 1], { extrapolateLeft: 'clamp' }),
+    dipIn ? interpolate(frame, [0, 6], [1, 0], { extrapolateRight: 'clamp' }) : 0,
+    dipOut ? interpolate(frame, [durationInFrames - 6, durationInFrames], [0, 1], { extrapolateLeft: 'clamp' }) : 0,
   )
   return <AbsoluteFill style={{ background: T.wall, opacity: o, pointerEvents: 'none' }} />
 }
@@ -53,11 +53,12 @@ export const Final = () => {
               <OffthreadVideo
                 src={staticFile(seg.src)}
                 startFrom={Math.round(seg.startFrom * FPS)}
+                playbackRate={seg.rate ?? 1}
                 muted
                 style={{ width: '100%', height: '100%', objectFit: 'contain', background: T.wall }}
               />
             )}
-            <Dip />
+            <Dip dipIn={seg.kind === 'clip' ? seg.dipIn : undefined} dipOut={seg.kind === 'clip' ? seg.dipOut : undefined} />
           </Sequence>
         )
       })}
