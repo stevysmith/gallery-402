@@ -21,7 +21,7 @@ export const EDL: Segment[] = [
   { kind: 'clip', src: 'r1-take2.mp4', startFrom: 2, duration: 10, label: 'cold open: the ask typed' },
   { kind: 'clip', src: 'r1-take2.mp4', startFrom: 96, duration: 26, label: 'cold open: ask → yes → purchase → Water Lilies' },
   { kind: 'card', comp: 'Title', duration: 8 },
-  { kind: 'card', comp: 'X402Flow', duration: 16 }, // trims the 20s render on the outro
+  { kind: 'card', comp: 'X402Flow', duration: 19 }, // through the closing line ('No account. No card form. No redirect.')
   // 0:52 proof it's real — R2: drip, buy, ledger settles…
   { kind: 'clip', src: 'r2-chrome.mp4', startFrom: 5, duration: 9, label: 'human path: pay' },
   // …the transaction itself (basescan refuses headless filming; a still works)
