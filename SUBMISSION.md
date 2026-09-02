@@ -1,8 +1,6 @@
 # Devpost submission — Gallery 402
 
-> Working draft of the text description. Fill in the URLs before submitting.
-
-**Live URL:** https://gallery402.stacktr.ee/ · **Video:** _TBD (YouTube, < 3 min)_ · **Repo:** https://github.com/stevysmith/gallery-402
+**Live URL:** https://gallery402.stacktr.ee/ · **Video:** https://youtu.be/TEGE-Sl1RXg · **Repo:** https://github.com/stevysmith/gallery-402
 
 ## Sixty seconds, no wallet, no setup
 
