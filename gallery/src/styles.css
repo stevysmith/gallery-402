@@ -34,7 +34,7 @@
 html, body { margin: 0; min-height: 100%; }
 body { font-family: var(--font-ui); font-size: 15px; line-height: 1.5; color: var(--on-wall); background: var(--wall); -webkit-font-smoothing: antialiased; }
 .app { min-height: 100vh; background: var(--wall); color: var(--on-wall); transition: background 700ms ease, color 700ms ease; }
-@media (prefers-reduced-motion: reduce) { .app, .frame-inner img, .stub, .door, .track, .slot, .zoom { transition: none !important; animation: none !important; } }
+@media (prefers-reduced-motion: reduce) { .app, .frame-inner img, .stub, .door, .track, .slot, .zoom, .busy-dot { transition: none !important; animation: none !important; } }
 
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--brass-2); outline-offset: 2px; }
@@ -103,6 +103,9 @@ code { font-family: var(--font-mono); font-size: 0.9em; }
 .board-held { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--verdigris); min-width: 62px; text-align: center; }
 .board .btn { min-width: 62px; justify-content: center; padding: 5px 10px; }
 .board-note { margin: 12px 0 0; font-size: 12.5px; color: var(--ink-2); }
+.board-waking { padding-bottom: 24px; }
+.waking-line { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 14px; color: var(--ink-2); }
+.waking-line .busy-dot { flex: none; }
 
 .doors { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 44px; }
 .door { position: relative; display: flex; flex-direction: column; text-align: left; border-radius: 3px; overflow: hidden; background: var(--frame); color: var(--paper); box-shadow: var(--shadow-frame); transition: transform 240ms ease; }

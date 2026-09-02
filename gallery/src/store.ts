@@ -294,7 +294,7 @@ export async function init() {
     set({ museum, loading: false })
     log('info', `${museum.name} is open. Tickets settle in USDC on ${museum.network === 'eip155:84532' ? 'Base Sepolia' : museum.network}.`)
   } catch (e: any) {
-    set({ loading: false, error: `The box office at ${BOX_OFFICE} isn't answering (${e?.message ?? e}).` })
+    set({ loading: false, error: `The box office at ${BOX_OFFICE} isn't answering (${e?.message ?? e}). Refresh to knock again.` })
   }
   await refreshBalance().catch(() => {})
   ensureFunds().catch(() => {})
@@ -375,9 +375,14 @@ export async function buyTicket(id: string, via: 'agent' | 'human' = 'human'): P
   // never be auto-retried — if the retry carrying the signature dies after the
   // facilitator settled, re-signing would pay twice — so the retries all happen
   // here, on a harmless probe, and the paid flow runs against a warm server.
+  let woke = false
   await wakeable(() => fetch(`${BOX_OFFICE}/health`).then((r) => { if (!r.ok) throw new TypeError('waking') }), (n) => {
-    if (n === 1) log('info', 'The box office is waking up — a moment.')
+    if (n !== 1) return
+    woke = true
+    set({ busy: 'Waking the box office' })
+    log('info', 'The box office is waking up — a moment.')
   }).catch(() => {})
+  if (woke) set({ busy: null })
   const isPass = id === m.dayPass.id
   const wing = isPass ? null : wingOf(id)
   if (!isPass && !wing) throw new Error(`Unknown wing "${id}". Wings: ${m.wings.map((w) => w.id).join(', ')}, or "${m.dayPass.id}".`)

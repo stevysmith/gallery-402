@@ -59,6 +59,13 @@ export function App() {
 
   const wing = s.view.screen === 'wing' ? s.view.wing : s.view.screen === 'compare' ? S.findArtwork(s.view.a)?.wing : undefined
 
+  // The tab reads like the wall plaque of the room you are standing in; the
+  // "Payment Required" comes back when you step out to the lobby.
+  useEffect(() => {
+    const room = wing ? S.wingOf(wing) : undefined
+    document.title = room ? `Room ${ROOM_NO[room.id]} · ${room.name} — Gallery 402` : 'Gallery 402 — Payment Required'
+  }, [wing])
+
   return (
     <div className="app" data-wing={wing ?? 'lobby'} data-screen={s.view.screen}>
       <TopBar
@@ -162,9 +169,34 @@ function TopBar({
 
 // ─── lobby ───────────────────────────────────────────────────────────────
 
+/** Whole seconds since `active` became true; 0 while it is false. */
+function useElapsed(active: boolean) {
+  const [sec, setSec] = useState(0)
+  useEffect(() => {
+    if (!active) {
+      setSec(0)
+      return
+    }
+    const t0 = Date.now()
+    const t = setInterval(() => setSec(Math.round((Date.now() - t0) / 1000)), 1000)
+    return () => clearInterval(t)
+  }, [active])
+  return sec
+}
+
+/** What the admission board says while the box office is still waking. The
+ *  free host sleeps between visitors, so a judge's first visit can wait ~20s
+ *  with nothing else on the page changing — the line has to carry it. */
+function wakingLine(sec: number) {
+  if (sec < 8) return 'The box office is waking up.'
+  if (sec < 16) return 'The box office sleeps between visitors — the first knock takes the longest.'
+  return 'Still knocking. Prices and doors appear here the moment it answers.'
+}
+
 function Lobby({ onPalette }: { onPalette: () => void }) {
   const s = useMuseum()
   const m = s.museum
+  const waited = useElapsed(s.loading && !m)
   const prompts = ['Get me into the Van Gogh room', 'Buy a day pass and show me the Great Wave', 'What does a ticket to the Dutch cabinet cost?']
   const [copied, setCopied] = useState<string | null>(null)
   const copy = (p: string) => {
@@ -188,6 +220,15 @@ function Lobby({ onPalette }: { onPalette: () => void }) {
       </section>
 
       {s.tour ? <TourPanel inline /> : <Tours />}
+
+      {!m && s.loading && waited >= 2 && (
+        <section className="board board-waking" aria-label="Admission" aria-live="polite">
+          <h2 className="board-title">Admission</h2>
+          <p className="waking-line">
+            <span className="busy-dot" /> {wakingLine(waited)}
+          </p>
+        </section>
+      )}
 
       {m && (
         <section className="board" aria-label="Admission prices">
@@ -770,6 +811,7 @@ function TourPanel({ inline }: { inline?: boolean }) {
   const [open, setOpen] = useState(true)
   const t = s.tour!
   const cost = S.tourCost(t)
+  const rooms = new Set(t.stops.map((x) => x.wing)).size
   const status = t.status === 'proposed' ? 'proposed' : t.status === 'done' ? 'finished' : `stop ${t.cursor + 1} of ${t.stops.length}`
   return (
     <aside className={`tour ${open ? '' : 'tour-closed'} ${inline ? 'tour-inline' : ''}`} data-tour-status={t.status} data-tour-cursor={t.cursor} aria-label="Tour itinerary">
@@ -802,7 +844,13 @@ function TourPanel({ inline }: { inline?: boolean }) {
             ))}
           </ol>
           <div className="tour-foot">
-            <span className="small muted tour-doors">{cost.needed.length ? `Doors: ${cost.label}` : 'All doors open'}</span>
+            <span className="small muted tour-doors">
+              {t.status === 'done'
+                ? `That’s the tour — ${t.stops.length} stop${t.stops.length === 1 ? '' : 's'} across ${rooms} room${rooms === 1 ? '' : 's'}. ${t.savedUrl ? 'The page is yours to keep.' : 'Save it as a page to keep the notes.'}`
+                : cost.needed.length
+                  ? `Doors: ${cost.label}`
+                  : 'All doors open'}
+            </span>
             <span className="tour-actions">
               {t.status === 'proposed' && (
                 <button className="btn btn-brass" onClick={() => run(S.startTour('human'))} disabled={!!s.busy}>
