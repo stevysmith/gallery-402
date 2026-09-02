@@ -36,13 +36,16 @@ One catalog drives both the human ⌘K palette and WebMCP registration (via [age
 | tool | what it does | annotations |
 |---|---|---|
 | `list_wings` | wings, prices, what hangs where, which tickets you hold | `readOnlyHint` |
+| `list_artworks` | titles, artists and dates in one wing or across the museum — stops for `plan_tour`, a target for `view_artwork` | `readOnlyHint` |
 | `look_around` | what's on screen: room, artwork, curator note, neighbours | `readOnlyHint` |
 | `wallet_status` | address, USDC balance, spending policy, tickets, receipts | `readOnlyHint` |
 | `fund_wallet` | testnet drip so the demo can be exercised for real | |
 | `buy_ticket` | pays a wing (or the day pass) over x402 inside the visitor's policy | |
 | `enter_wing` | walks into a ticketed wing | |
+| `present_ticket` | hand over a ticket bought directly from the box office's 402 by an agent with its own wallet — honoured like one bought in-page | |
 | `view_artwork` | brings a work in front of the visitor by title / artist / id | |
 | `walk` | next / previous along the wall | |
+| `undo` | take back the last move, spotlight or tour edit — payments stay paid, and it says so | |
 | `receipts` | every payment and ticket, with tx links | `readOnlyHint` |
 | `whos_here` | who was admitted recently, with settlement txs (the lobby ticker) | `readOnlyHint` |
 | `go_to_lobby` | back to the entrance hall | |
@@ -162,7 +165,7 @@ The mainnet rail switches on when the CDP keys are set (`X402_MAINNET=off` disab
 
 Twenty-four public-domain works from the Art Institute of Chicago, The Met, The Cleveland Museum of Art, the Rijksmuseum and the J. Paul Getty Museum, each with its museum's credit line and a link to the source record. Rooms: Impressionist Wing (Monet), Van Gogh Room, Print Room (Hokusai, Hiroshige), Dutch Cabinet (Vermeer and Delft).
 
-**Everything hangs to scale.** Each work carries its real dimensions from its museum's own record, and one pixels-per-centimetre factor governs the whole building — so the Great Wave hangs at 25.4 × 37.6 cm, about the size of an open laptop, and Monet's *Wheatstacks* looms over it at more than a metre across. The wall spaces works by their own width, which is why a room of prints shows six at once and a room of canvases shows two. The size reaches the agent too: `look_around` and `list_artworks` report it, so a docent agent can tell you the thing in front of you is smaller than the poster you know it from.
+**Everything hangs to scale.** Each work carries its real dimensions from its museum's own record, and one pixels-per-centimetre factor governs the whole building — so the Great Wave hangs at 25.4 × 37.6 cm, about the size of an open laptop, and Monet's *Wheatstacks* looms over it at more than a metre across. The wall spaces the works by their own width, which is why a room of prints shows six at once and a room of canvases shows two. The size reaches the agent too: `look_around` and `list_artworks` report it, so a docent agent can tell you the thing in front of you is smaller than the poster you know it from.
 
 ## Built on
 
