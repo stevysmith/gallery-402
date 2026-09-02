@@ -4,7 +4,7 @@ Deliverable: one YouTube upload. Screen recordings are yours; every card, diagra
 and caption is rendered by `video/` (see bottom). Record at 1920×1080, trackpad
 cursor visible, sound off. QuickTime screen recording is fine.
 
-## Script — the voice is ElevenLabs (George), one clip per beat
+## Script — thirteen cues, one per picture beat (Steve's read; ElevenLabs George as the fallback)
 
 Times below are the picture-lock, to the second. The VO is not one take: it is
 thirteen cues in `video/vo/script.mjs`, each pinned to the second its picture
@@ -148,5 +148,13 @@ voice over it — no editing app needed.
    1080p/30 with dip-to-wall transitions. Upload to YouTube (public);
    thumbnail is `out/thumbnail.png`.
 
-A human read is still possible: record to `out/gallery-402-silent.mp4`, save
-as `assets/vo.m4a`, set `VO = 'vo.m4a'`.
+**Steve's own read is the voice on the submission.** It was recorded freely
+(no picture running — pauses wherever the reader paused, 3:05 of audio for
+2:48 of film), then cut to the cues by `node vo/slice.mjs assets/v0.m4a`:
+one clean-up pass (high-pass, gentle compression, −18 LUFS, true-peak
+limited), then the take is split at its own silences and the runs of speech
+grouped into the thirteen cues by word count. The clips land in
+`assets/vo-steve/` and `VO = 'cues:vo-steve'` plays them at each cue's `at`
+— same fit table as the ElevenLabs path, and every cue fits its slot. To swap
+back to George: `VO = 'cues'`. A take that follows the picture in one go can
+still be played whole: save it in `assets/` and set `VO` to its filename.

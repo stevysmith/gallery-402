@@ -88,6 +88,9 @@ const Caption = ({ text, hold }: { text: string; hold?: number }) => {
   )
 }
 
+/** The folder under assets/ holding one clip per cue, or null for a continuous take. */
+const cueDir = VO === 'cues' ? 'vo' : VO?.startsWith('cues:') ? VO.slice('cues:'.length) : null
+
 export const Final = () => {
   let at = 0
   return (
@@ -110,10 +113,10 @@ export const Final = () => {
           </Sequence>
         )
       })}
-      {VO === 'cues'
+      {cueDir
         ? CUES.map((c) => (
             <Sequence key={c.id} from={Math.round(c.at * FPS)}>
-              <Audio src={staticFile(`vo/${c.id}.mp3`)} />
+              <Audio src={staticFile(`${cueDir}/${c.id}.mp3`)} />
             </Sequence>
           ))
         : VO ? <Audio src={staticFile(VO)} /> : null}
