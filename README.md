@@ -6,8 +6,9 @@ Each wing costs a few cents, charged over **HTTP 402** using the [x402](https://
 
 Built for [The WebMCP Challenge](https://webmcp.devpost.com/) (Aug 25 – Sep 3, 2026).
 
-- **Live:** _(coming — see [Deploy](#deploy))_
-- **Video:** _(coming)_
+- **Live:** https://gallery402.stacktr.ee/ — box office at https://gallery-402-box-office.onrender.com (free tier: the first request after idle takes ~30 s while it wakes; the page narrates the wait)
+- **Video:** https://youtu.be/TEGE-Sl1RXg (2:48)
+- **Devpost:** https://devpost.com/software/gallery-402
 - **License:** MIT
 - **Where the WebMCP code is:** the tool catalog and executor are [`gallery/src/tools.ts`](gallery/src/tools.ts); registration goes through agentk's [`useWebMCPRegistration`](https://github.com/stevysmith/agentk/blob/main/src/index.tsx) (`document.modelContext.registerTool`, `navigator.modelContext` fallback, `AbortSignal` unregistration) from [`gallery/src/App.tsx`](gallery/src/App.tsx); the evals that exercise it are in [`gallery/evals/`](gallery/evals/).
 
@@ -65,7 +66,7 @@ One catalog drives both the human ⌘K palette and WebMCP registration (via [age
 
 **The in-page agent works in steps.** Type a request in ⌘K — *"give me a short tour about light and then start it and walk me to the second stop"* — and it runs to completion: `take_tour` → `start_tour` (which buys the day pass) → `tour_step`, then a plain-English summary of where you are. Each plan is approved by a human first, except read-only ones, which run freely (`autoApproveReadOnly` reads the WebMCP `readOnlyHint` annotations). That needed agentk 0.6.x — before it, the agent planned once, ran one tool, and stopped.
 
-**A Chrome-version trap, found the hard way.** Before Chrome 153, unregistering a tool aborts an execution still running on it (`UnknownError: transient`). A live surface trips this constantly — `buy_ticket`'s own result makes `enter_wing` appear. agentk 0.5.1 therefore defers every surface change until the last in-flight call has returned and the browser has delivered its result; the eval harness's fake `modelContext` records any register/unregister during a call as a failure so it can't regress. Verified end-to-end against Chrome 151's real `document.modelContext`.
+**A Chrome-version trap, found the hard way.** Before Chrome 153, unregistering a tool aborts an execution still running on it (`UnknownError: transient`). A live surface trips this constantly — `buy_ticket`'s own result makes `enter_wing` appear. agentk 0.6.2 therefore defers every surface change until the last in-flight call has returned and the browser has delivered its result; the eval harness's fake `modelContext` records any register/unregister during a call as a failure so it can't regress. Verified end-to-end against Chrome 151's real `document.modelContext`.
 
 **The page can't speak first, so it speaks next.** WebMCP is agent-initiated; the only channel a page has back to the agent is the result of the next tool call. Every result returned to an agent therefore carries `sinceYourLastCall` — what the visitor did in the meantime (pointed at a detail, dropped a tour stop, changed their spending limit) — and, when they're pointing, `visitorPointing`. That is the "back and forth" Chrome's tool-design guide describes, done on purpose. The wing is one long wall the camera glides along; neighbouring works hang at an angle either side.
 
@@ -77,7 +78,7 @@ Deliberately **not** a tool: changing the spending policy. That's a human contro
 
 ## Evals
 
-Twenty-six cases, two runners, one fake `document.modelContext` that drives the real page the way a WebMCP browser does. `npm run eval` replays each case's expected tool sequence and checks the page (wing, artwork, tickets, which tools are registered afterwards, `isError` on a declined payment). `npm run eval:llm` hands the same prompts to a real model with the live tool list, re-read every turn, and judges what it chose to call — e.g. that "see every room cheaply" buys one day pass, and "what does it cost?" buys nothing. Details in [`gallery/evals/README.md`](gallery/evals/README.md).
+Thirty-four cases, two runners, one fake `document.modelContext` that drives the real page the way a WebMCP browser does. `npm run eval` replays each case's expected tool sequence and checks the page (wing, artwork, tickets, which tools are registered afterwards, `isError` on a declined payment). `npm run eval:llm` hands 28 of the same prompts (the other six are error-text contracts, not natural asks) to a real model with the live tool list, re-read every turn, and judges what it chose to call — e.g. that "see every room cheaply" buys one day pass, and "what does it cost?" buys nothing. Details in [`gallery/evals/README.md`](gallery/evals/README.md).
 
 ```
 ✓ enter-van-gogh        ✓ price-check-no-purchase   ✓ see-everything-cheaply   ✓ show-great-wave
@@ -169,6 +170,6 @@ Twenty-four public-domain works from the Art Institute of Chicago, The Met, The 
 
 ## Built on
 
-- [agentk](https://github.com/stevysmith/agentk) — one tool catalog → ⌘K palette for humans + WebMCP registration for agents (0.5.0 adds `annotations`, `title` and `isError`; 0.5.1 also defers WebMCP surface changes while a call is in flight, which Chrome <153 needs; vendored in `gallery/vendor/` until the npm release)
+- [agentk](https://github.com/stevysmith/agentk) — one tool catalog → ⌘K palette for humans + WebMCP registration for agents (0.6.2, installed from npm: `annotations`, `title` and `isError` on registration; WebMCP surface changes deferred while a call is in flight, which Chrome <153 needs; multi-step agent turns)
 - [x402](https://github.com/coinbase/x402) v2 — `@x402/hono`, `@x402/fetch`, `@x402/evm`
 - [viem](https://viem.sh), [Hono](https://hono.dev), [Vite](https://vite.dev)
