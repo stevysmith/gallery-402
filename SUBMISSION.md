@@ -94,7 +94,7 @@ We know the difference between a winning demo and a product. The transaction is 
 - **agent-browser (CLI):** `npx agent-browser open https://gallery402.stacktr.ee/ && agent-browser webmcp list` — agent-browser ≥0.36 ships native WebMCP support, and the museum works through it with zero adaptation: `webmcp invoke gallery_buy_ticket --params '{"wing":"ukiyo-e"}'` settles a real testnet payment and returns the ticket + tx hash. A fifth independent client, and the fastest way for a judge to smoke-test the tools from a terminal.
 - **Chrome DevTools:** the experimental WebMCP panel shows the registered tools live — watch the surface change as you buy a ticket and walk between rooms, and invoke any tool by hand. All 22 tools carry descriptions on every parameter.
 - **No agent:** press ⌘K — same tools.
-- The wallet starts empty on purpose; "Top up" (or the `fund_wallet` tool) drips 0.05 test USDC. Tickets are $0.01–$0.02; the day pass is $0.04.
+- The museum stakes every new wallet 0.05 test USDC on arrival; "Top up" (or the `fund_wallet` tool) drips more if you run dry. Tickets are $0.01–$0.02; the day pass is $0.04.
 
 ## Collection
 
